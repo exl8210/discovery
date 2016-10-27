@@ -36,7 +36,7 @@ app.main = {
     
     // sounds
     sound: undefined,
-    /*
+
     // scene scrolling
     speed: 50,
     quickSpeed: false,
@@ -45,10 +45,8 @@ app.main = {
         LEFT: 1,
         RIGHT: 2
     }),
-    */
-    // sprites
-    alienSprite: undefined,
-    
+
+
     // --- Methods
     // initialise main
     init: function() {
@@ -78,18 +76,21 @@ app.main = {
         this.effectAudio = document.querySelector("#effectAudio");
         this.effectAudio.volume = 0.3;
         
+        
+        //-------SPRITES--------
         // populate sprites
         //create sprite
-        this.alienSprite = new drawSprite("assets/sprite/alienSprite.png", 170, 124, 3, 3);
-        
+        this.alienSprite; 
         //clear last sprite drawn
         this.ctx.clearRect(0,0,150,150);
         
         this.alienSprite.update();
-         
+        
         //draw sprite at certain point
         this.alienSprite.draw(100,100);
         
+        
+        //-------SOUND----------
         // start with no audio
         this.sound.stopBGAudio();
         
@@ -163,43 +164,6 @@ app.main = {
         
         
         // underwater
-    },
-    
-    // sprites
-    drawSprite: function(path, frameWidth, frameHeight, frameSpeed, endFrame){
-        //create the image and set its path
-        //since different sprite sheets have different frame width and height, we won't hardcode them
-        
-        this.image = new Image();
-        this.framesPerRow;
-        
-        image.onload = function(){
-            framesPerRow = Math.floor(image.width / frameWidth);
-        };
-        
-        image.src = path;
-        
-        this.currentFrame = 0;   //the current frame to draw
-        this.counter = 0;        //keep track of frame rate
-        
-        //update the animation
-        this.update = function(){
-            if (counter ==(frameSpeed - 1))
-                counter = (currentFrame + 1) % endFrame;    //modulo operate creates a continuous loop
-            
-            //update the counter
-            counter = (counter + 1) % frameSpeed;
-        };
-    
-        //calculate the coordinates of the frame to draw
-        this.draw = function(x,y) {
-            //get the row of the frame
-            var row = Math.floor(currentFrame / framesPerRow);
-            var col = Math.floor(currentFrame % framesPerRow);
-    
-            ctx.drawImage(image, col * frameWidth, row * frameHeight, frameWidth, frameHeight, x, y, frameWidth, frameHeight);
-        };
-        
     },
     
     // audio
