@@ -1,0 +1,37 @@
+/* Basic */
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+
+/* Structure */
+body {
+    background-color: #fafafa;
+}
+
+
+/* Components */
+
+canvas#uiCanvas {
+    background-color: rgba(255, 255, 255, .5);
+    z-index: 2;
+    position: absolute;
+}
+
+canvas#scrollCanvas {
+    background-color: #232323;
+    z-index: 0;
+    position: absolute;
+}
+
+#audioControls {
+    /*display: none;*/
+    top: 480px;
+    position: relative;
+}
+
