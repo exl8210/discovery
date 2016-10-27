@@ -46,16 +46,20 @@ window.addEventListener("keyup",function(e){
     if (char == "KEY_RIGHT") {
         // scroll to the right
         
+        app.scene.changeDirection("r");
     }
     
     if (char == "KEY_LEFT") {
         // scroll to the left
         
+        app.scene.changeDirection("l");
     }
     
     // moving quicker
     if (char == "KEY_SHIFT") {
         // turn on 'speedy' variable
+        
+        app.scene.toggleQuick();
     }
 });
 

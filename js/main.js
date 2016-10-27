@@ -36,7 +36,7 @@ app.main = {
     
     // sounds
     sound: undefined,
-    
+    /*
     // scene scrolling
     speed: 50,
     quickSpeed: false,
@@ -45,7 +45,7 @@ app.main = {
         LEFT: 1,
         RIGHT: 2
     }),
-    
+    */
     // sprites
     alienSprite: undefined,
     
