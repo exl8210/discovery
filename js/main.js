@@ -80,7 +80,7 @@ app.main = {
         
         // populate sprites
         //create sprite
-        this.alienSprite = this.drawSprite("assets/sprite/alienSprite.png", 170, 124, 3, 3);
+        this.alienSprite = new drawSprite("assets/sprite/alienSprite.png", 170, 124, 3, 3);
         
         //clear last sprite drawn
         this.ctx.clearRect(0,0,150,150);
@@ -170,18 +170,17 @@ app.main = {
         //create the image and set its path
         //since different sprite sheets have different frame width and height, we won't hardcode them
         
-        var image = new Image();
-        var framesPerRow;
+        this.image = new Image();
+        this.framesPerRow;
         
-        var self = this;
         image.onload = function(){
             framesPerRow = Math.floor(image.width / frameWidth);
         };
         
         image.src = path;
         
-        var currentFrame = 0;   //the current frame to draw
-        var counter = 0;        //keep track of frame rate
+        this.currentFrame = 0;   //the current frame to draw
+        this.counter = 0;        //keep track of frame rate
         
         //update the animation
         this.update = function(){
