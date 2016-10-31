@@ -39,6 +39,10 @@ function loadImagesWithCallback(sources, callback) {
 	}
 }
 
+function getRandom(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
 /*
 Function Name: clamp(val, min, max)
 Author: Web - various sources

@@ -41,6 +41,10 @@ app.sound = (function(){
 		}
 	}
     
+    function soundTest() {
+        console.log("sound: function test");
+    }
+    
 	// export a public interface to this module
     // the REVEALING MODULE PATTERN --> reveal public references to methods inside the module's scope
 	return {
@@ -48,6 +52,7 @@ app.sound = (function(){
         playBGAudio: playBGAudio,
         stopBGAudio: stopBGAudio,
         playEffect: playEffect,
+        soundTest: soundTest,
     };
     
 }());

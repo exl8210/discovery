@@ -29,7 +29,6 @@ window.onload = function(){
     
     // load main app
 	app.main.init();
-    
 }
 
 // --- Pausing/unpausing
