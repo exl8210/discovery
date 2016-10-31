@@ -98,7 +98,9 @@ app.main = {
         this.camera = new this.scene.Camera(0, 0, canvas.width, canvas.height, this.room.width, this.room.height);
         
         // -- UI ---
-        this.document.querySelector("#hamIcon").onclick = function(e){
+        this.hamIcon = document.querySelector("#hamIcon");
+        this.hamIcon.onclick = function(e){
+            
             this.ctx.save();
             this.ctx.fillStyle = "white";
             this.ctx.fillRect(0,0,200,this.HEIGHT);
