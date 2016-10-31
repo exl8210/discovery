@@ -225,9 +225,9 @@ app.scene = (function() {
 
     // Game Script
     (function(){
-        // prepaire our game canvas
-        var canvas = document.getElementById("gameCanvas");
-        var context = canvas.getContext("2d");
+        // prepare canvas
+        var canvas = document.querySelector("#scrollCanvas");
+        var ctx = canvas.getContext("2d");
 
         // game settings:	
         var FPS = 30;
@@ -251,16 +251,16 @@ app.scene = (function() {
         // Game draw function
         var draw = function(){
             // clear the entire canvas
-            context.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             // redraw all objects
-            room.map.draw(context, camera.xView, camera.yView);		
-            player.draw(context, camera.xView, camera.yView);		
+            room.map.draw(ctx, camera.xView, camera.yView);		
+            player.draw(ctx, camera.xView, camera.yView);		
         }
 
         // Game Loop
-        var gameLoop = function(){     
-            requestAnimationFrame(gameLoop());
+        var loop = function(){     
+            requestAnimationFrame(loop());
 
             camera.update(STEP);
             draw();
@@ -273,16 +273,16 @@ app.scene = (function() {
 
         var runningId = -1;
 
-        Game.play = function(){	
+        app.scene.play = function(){	
             if(runningId == -1){
                 runningId = setInterval(function(){
-                    gameLoop();
+                    loop();
                 }, INTERVAL);
                 console.log("play");
             }
         }
 
-        Game.togglePause = function(){		
+        app.scene.togglePause = function(){		
             if(runningId == -1){
                 Game.play();
             }
@@ -347,10 +347,9 @@ app.scene = (function() {
     }, false);
 
     // -->
-
     // start the game when page is loaded
     window.onload = function(){	
-        Game.gameLoop();
+        app.scene.loop();
     }
-    */
+*/
 });

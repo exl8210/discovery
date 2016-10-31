@@ -16,9 +16,12 @@ var app = app || {};
 window.onload = function(){
 	console.log("window.onload called");
     
-    // hook up modules so we don't have hard-coded dependencies in the modules themselves
+    // hook up the sound
     app.sound.init();
     app.main.sound = app.sound;
+    
+    // hook up the scene
+    app.scene.loop();
     
 	app.main.init();
 }
