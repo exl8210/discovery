@@ -96,20 +96,7 @@ app.main = {
         this.room.map.generate();
         // set up camera
         this.camera = new this.scene.Camera(0, 0, canvas.width, canvas.height, this.room.width, this.room.height);
-        
-        //-------SPRITES--------
-        // populate sprites
-        //create sprite
-        this.alienSprite; 
-        //clear last sprite drawn
-        this.ctx.clearRect(0,0,150,150);
-        
-        this.alienSprite.update();
-        
-        //draw sprite at certain point
-        this.alienSprite.draw(100,100);
-        
-        
+
         //-------SOUND----------
         // start with no audio
         this.sound.stopBGAudio();

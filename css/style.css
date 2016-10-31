@@ -23,6 +23,11 @@ canvas#uiCanvas {
     position: absolute;
 }
 
+canvas#spriteCanvas {
+    z-index: 1;
+    position:absolute;
+}
+
 canvas#scrollCanvas {
     /*background-color: #232323;*/
     z-index: 0;
