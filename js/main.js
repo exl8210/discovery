@@ -1,11 +1,10 @@
-/*
-main.js
-*/
-
+// sound.js
 "use strict";
-
+// if app exists use the existing copy
+// else create a new object literal
 var app = app || {};
 
+// define the .sound module and immediately invoke it in an IIFE
 app.main = {
     // --- Variables
     // canvases
@@ -35,8 +34,22 @@ app.main = {
     }),
     
     // sounds
-    sound: undefined,
-
+    //sound: undefined,
+    
+    // scene
+    //scene: undefined,
+    room: {
+        width: 1280,
+        height: 460,
+        map: undefined,
+    },
+    STEP: undefined,
+    /*
+    viewport: undefined,
+    camera: undefined,
+    map: undefined,
+    */
+    /*
     // scene scrolling
     speed: 50,
     quickSpeed: false,
@@ -45,37 +58,44 @@ app.main = {
         LEFT: 1,
         RIGHT: 2
     }),
-
+    */
 
     // --- Methods
     // initialise main
     init: function() {
         console.log("main.js init called");
         
-		// initialise scroll canvas properties
+		// --- initialise scroll canvas properties
 		this.canvas = document.querySelector('#scrollCanvas');
 		this.canvas.width = this.WIDTH;
 		this.canvas.height = this.HEIGHT;
         console.log(this.canvas.width + ", " + this.canvas.height);
 		this.ctx = this.canvas.getContext('2d');
         
-		// initialise ui canvas properties
+		// --- initialise ui canvas properties
 		this.interface = document.querySelector('#uiCanvas');
 		this.interface.width = 680;
 		this.interface.height = this.HEIGHT;
         console.log(this.interface.width + ", " + this.interface.height);
 		this.intCtx = this.interface.getContext('2d');
         
-        // initialise experience
+        // --- initialise experience
         this.expState = this.EXP_STATE.BEGIN;
         //this.expState = this.EXP_STATE.SPACE;
         
-        // initialise audio
+        // --- initialise audio
         this.bgAudio = document.querySelector("#bgAudio");
         this.bgAudio.volume = 0.25;
         this.effectAudio = document.querySelector("#effectAudio");
         this.effectAudio.volume = 0.3;
         
+        // --- initialise scene
+        // map
+        this.room.map = new Map(3000, 460);
+        // generate large image texture
+        this.room.map.generate();
+        // set up camera
+        this.camera = new this.scene.Camera(0, 0, canvas.width, canvas.height, this.room.width, this.room.height);
         
         //-------SPRITES--------
         // populate sprites
@@ -100,6 +120,8 @@ app.main = {
     
     // animation loop
     update: function() {
+        console.log("update loop called");
+        
         // schedule call to update()
         this.animationID = requestAnimationFrame(this.update.bind(this));
         
@@ -111,6 +133,24 @@ app.main = {
         
         // check for time passed
         var dt = this.calculateDeltaTime();
+        
+        // draw scene
+        console.log("drawing scene");
+        this.drawScene(this.ctx);
+        
+        //this.test();
+        console.log("testing: bg");
+		this.ctx.fillStyle = "black"; 
+		this.ctx.fillRect(0,0,this.WIDTH,this.HEIGHT); 
+        
+        console.log("testing: circle");
+        this.ctx.save();
+        this.ctx.beginPath();
+        this.ctx.arc(200, 200, 50, 0, Math.PI*2, false);
+        this.ctx.closePath(0);
+        this.ctx.fillStyle = "red";
+        this.ctx.fill();
+        this.ctx.restore();
     },
     
     // debug
@@ -120,6 +160,7 @@ app.main = {
 		fps = 1000 / (now - this.lastTime);
 		fps = clamp(fps, 12, 60);
 		this.lastTime = now; 
+        this.STEP = 1/fps;
 		return 1/fps;
 	},
     
@@ -150,6 +191,27 @@ app.main = {
         
         // play audio
         this.sound.playBGAudio();
+    },
+    
+    // set up scene
+    drawScene: function(ctx) {
+        // clear the entire canvas
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // redraw all objects
+        this.room.map.draw(ctx, this.camera.xView, this.camera.yView);	
+        
+    },
+    
+    // === TESSSSTTTTTT
+    test: function() {
+        this.ctx.save();
+        this.ctx.beginPath();
+        this.ctx.arc(this.canvas.width/2, this.canvas.height/2, 50, 0, Math.PI*2, false);
+        this.ctx.closePath(0);
+        this.ctx.fillStyle = "red";
+        this.ctx.fill();
+        this.ctx.restore();
     },
     
     // UI & screens
@@ -206,6 +268,4 @@ app.main = {
         var mouse = getMouse(e);
     },
     
-	
-    
-};  // end app.main
+};

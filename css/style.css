@@ -18,13 +18,13 @@ body {
 /* Components */
 
 canvas#uiCanvas {
-    background-color: rgba(255, 255, 255, .5);
+    background-color: rgba(255, 255, 255, 0);
     z-index: 2;
     position: absolute;
 }
 
 canvas#scrollCanvas {
-    background-color: #232323;
+    /*background-color: #232323;*/
     z-index: 0;
     position: absolute;
 }

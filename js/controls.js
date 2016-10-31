@@ -23,12 +23,12 @@ controls.keydown = [];
 
 // --- Event listeners
 window.addEventListener("keydown",function(e){
-	console.log("keydown=" + e.keyCode);
+	//console.log("keydown=" + e.keyCode);
 	controls.keydown[e.keyCode] = true;
 });
 	
 window.addEventListener("keyup",function(e){
-	console.log("keyup=" + e.keyCode);
+	//console.log("keyup=" + e.keyCode);
 	controls.keydown[e.keyCode] = false;
     
 	var char = String.fromCharCode(e.keyCode);

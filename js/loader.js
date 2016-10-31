@@ -21,9 +21,15 @@ window.onload = function(){
     app.main.sound = app.sound;
     
     // hook up the scene
-    app.scene.loop();
+    //app.scene.loop();
+    app.main.scene = app.scene;
     
+    console.dir(app);   
+    console.dir(app.main);   
+    
+    // load main app
 	app.main.init();
+    
 }
 
 // --- Pausing/unpausing
