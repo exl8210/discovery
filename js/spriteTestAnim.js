@@ -26,6 +26,7 @@ var app = app || {};
         that.height = options.height;
         that.image = options.image;
         
+        //update the frames
         that.update = function(){
             tickCount += 1;
             
@@ -43,6 +44,7 @@ var app = app || {};
             }
         };
         
+        //draw the frames
         that.render = function(){
             //clear the canvas
             that.context.clearRect(0,0, that.width, that.height);
@@ -57,8 +59,8 @@ var app = app || {};
 
     //get the canvas
     canvas = document.getElementById("spriteAnimation");
-    canvas.width = 170;
-    canvas.height = 170;
+    canvas.width = 300;
+    canvas.height = 123;
     
     //cerate the sprite sheet
     alienImg = new Image();
@@ -66,11 +68,11 @@ var app = app || {};
     //create sprite
     alien = sprite({
         context: canvas.getContext("2d"),
-        width: 1000,
-        height: 100,
+        width: 499,
+        height: 123,
         image: alienImg,
         numberOfFrames: 3,
-        ticksPerFrame: 4
+        ticksPerFrame: 7
     });
     
     //load sprite sheet
