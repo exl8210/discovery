@@ -96,7 +96,18 @@ app.main = {
         this.room.map.generate();
         // set up camera
         this.camera = new this.scene.Camera(0, 0, canvas.width, canvas.height, this.room.width, this.room.height);
-
+        
+        // -- UI ---
+        this.document.querySelector("#hamIcon").onclick = function(e){
+            this.ctx.save();
+            this.ctx.fillStyle = "white";
+            this.ctx.fillRect(0,0,200,this.HEIGHT);
+            this.ctx.fillText(this.ctx, "menu", 20, 50, "20pt verdana", "black");
+            
+            console.log("menu open");
+        }
+        
+        
         //-------SOUND----------
         // start with no audio
         this.sound.stopBGAudio();
@@ -114,12 +125,13 @@ app.main = {
         
         // check for pause state
         if (this.paused) {
-            // draw pause screen?
+            this.drawPauseScreen(this.ctx);
             return;
         }
         
         // check for time passed
         var dt = this.calculateDeltaTime();
+
         
         // draw scene
         console.log("drawing scene");
@@ -190,6 +202,16 @@ app.main = {
         
     },
     
+    drawPauseScreen: function(ctx){
+        ctx.save();
+        ctx.fillStyle = "white";
+        ctx.fillRect(0,0,this.width, this.height);
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        this.fillText(this.ctx, "paused.", this.width/2, this.height/2, "40pt verdana", "black");
+        ctx.restore(); 
+    },
+    
     // === TESSSSTTTTTT
     test: function() {
         this.ctx.save();
@@ -201,18 +223,12 @@ app.main = {
         this.ctx.restore();
     },
     
-    // UI & screens
+    // UI 
     drawUI: function(ctx) {
-        // intro
+        //menu
+
         
-        
-        // home
-        
-        
-        // space
-        
-        
-        // underwater
+
     },
     
     // audio

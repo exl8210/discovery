@@ -36,9 +36,9 @@ window.addEventListener("keyup",function(e){
 	// pausing and resuming
 	if (char == "p" || char == "P"){
 		if (app.main.paused){
-			app.main.resumeGame();
+			app.main.resume();
 		} else {
-			app.main.pauseGame();
+			app.main.pause();
 		}
 	}
     
