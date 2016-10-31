@@ -36,11 +36,11 @@ var DrawSprite = function(path, frameWidth, frameHeight, frameSpeed, endFrame){
             this.row = Math.floor(currentFrame / framesPerRow);
             this.col = Math.floor(currentFrame % framesPerRow);
     
-            ctx.drawImage(image, col * frameWidth, row * frameHeight, frameWidth, frameHeight, x, y, frameWidth, frameHeight);
+            this.ctx.drawImage(image, col * frameWidth, row * frameHeight, frameWidth, frameHeight, x, y, frameWidth, frameHeight);
         };
         
 };
 
-var alienSprite = new DrawSprite("assets/sprite/alienSprite.png", 170, 124, 3, 3);
+var alienSprite = new DrawSprite("images/alienSprite.png", 170, 124, 3, 3);
 //var fireSprite = new DrawSprite();
 //var fishSprite = new DrawSprite();
