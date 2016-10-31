@@ -51,8 +51,9 @@ app.scene = (function(){
             }
         }
     };
-*/
-    // map
+
+    
+    // === Map
     var map = {
         // dimensions
         width: 3000,
@@ -63,6 +64,8 @@ app.scene = (function(){
         
         // functions
         generate: function() {
+            console.log("hello map");
+            
             var ctx = document.createElement("canvas").getContext("2d");		
             ctx.canvas.width = this.width;
             ctx.canvas.height = this.height;		
@@ -118,13 +121,14 @@ app.scene = (function(){
         },
         
     };
-    
+    */
     // === Viewport
-    console.log("hello viewport");
     
     // --- Viewport constructor
     // - sets the sizes and parameters for the viewport
     function Viewport(left, top, width, height){
+        console.log("hello viewport");
+        
         this.left = left || 0;
         this.top = top || 0;
         this.width = width || 0;
@@ -162,9 +166,10 @@ app.scene = (function(){
     }
     
     // === Camera
-    console.log("hello camera");
     function Camera(xView, yView, canvasWidth, canvasHeight, worldWidth, worldHeight)
     {
+        console.log("hello camera");
+        
         // position of camera (left-top coordinate)
         this.xView = xView || 0;
         this.yView = yView || 0;
@@ -205,10 +210,6 @@ app.scene = (function(){
         console.log("quack");
         this.speed *= this.quickMultiplier;
     }
-    
-    
-    // === Map
-    console.log("hello map");
 
     
     // === test

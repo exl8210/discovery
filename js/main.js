@@ -34,7 +34,7 @@ app.main = {
     }),
     
     // sounds
-    //sound: undefined,
+    sound: undefined,
     
     // scene
     //scene: undefined,
@@ -44,11 +44,114 @@ app.main = {
         map: undefined,
     },
     STEP: undefined,
-    /*
-    viewport: undefined,
-    camera: undefined,
-    map: undefined,
-    */
+    
+    // camera
+    camera: {
+        // camera position
+        xView: 0,
+        yView: 0,
+        
+        // viewport dimensions
+        wView: 680,
+        hView: 460,
+        
+        // rect representing the viewport
+        screenView: undefined,
+        worldRect: undefined,
+        
+        // functions
+        update: function(step) {
+            // update screenView
+            if(direction == DIRECTION.LEFT)
+                this.xView -= this.speed * step;
+            if(direction == DIRECTION.RIGHT)
+                this.xView += this.speed * step;
+
+            this.screenView.set(this.xView, this.yView);
+
+            // don't let camera leaves the world's boundary
+            if(!this.screenView.within(this.worldRect))
+            {
+                if(this.screenView.left < this.worldRect.left)
+                    this.xView = this.worldRect.left;
+                if(this.screenView.top < this.worldRect.top)					
+                    this.yView = this.worldRect.top;
+                if(this.screenView.right > this.worldRect.right)
+                    this.xView = this.worldRect.right - this.wView;
+                if(this.screenView.bottom > this.worldRect.bottom)					
+                    this.yView = this.worldRect.bottom - this.hView;
+            }
+        }
+    },
+    
+    // map
+    map: {
+        // dimensions
+        width: 3000,
+        height: 460,
+        
+        // map texture
+        image: null,
+        
+        // functions
+        generate: function() {
+            console.log("hello map");
+            
+            var ctx = document.createElement("canvas").getContext("2d");		
+            ctx.canvas.width = this.width;
+            ctx.canvas.height = this.height;		
+
+            ctx.save();			
+            ctx.fillStyle = "#232323";		    
+            ctx.fillRect(0, 0, this.width, this.height);
+
+            for (var i = 0; i < this.width*0.25; i++) {
+                ctx.fillStyle = "rgba(255, 255, 255, " + getRandom(0, 1) + ")";
+                ctx.beginPath();
+                ctx.arc(getRandom(0, this.width), getRandom(0, this.height), getRandom(1, getRandom(1, 3)), 0, Math.PI*2, false);
+                ctx.closePath();
+                ctx.fill();
+            }
+            ctx.restore();	
+
+            // store the generate map as this image texture
+            this.image = new Image();
+            this.image.src = ctx.canvas.toDataURL("image/png");					
+
+            // clear context
+            ctx = null;
+        },
+        draw: function(context, xView, yView) {
+            var cx, cy, dx, dy;
+            var cWidth, cHeight, dWidth, dHeight;
+
+            // offset point to crop the image
+            cx = xView;
+            cy = yView;
+
+            // dimensions of cropped image			
+            cWidth =  context.canvas.width;
+            cHeight = context.canvas.height;
+
+            // if cropped image is smaller than canvas we need to change the source dimensions
+            if(this.image.width - cx < cWidth){
+                cWidth = this.image.width - cx;
+            }
+            if(this.image.height - cy < cHeight){
+                cHeight = this.image.height - cy; 
+            }
+
+            // location on canvas to draw the cropped image
+            dx = 0;
+            dy = 0;
+            // match destination with source to not scale the image
+            dWidth = cWidth;
+            dHeight = cHeight;									
+
+            context.drawImage(this.image, cx, cy, cWidth, cHeight, dx, dy, dWidth, dHeight);
+        },
+    },
+    
     /*
     // scene scrolling
     speed: 50,
@@ -91,11 +194,20 @@ app.main = {
         
         // --- initialise scene
         // map
-        this.room.map = new Map(3000, 460);
+        this.room.map = this.scene.map;
+        
         // generate large image texture
         this.room.map.generate();
-        // set up camera
-        this.camera = new this.scene.Camera(0, 0, canvas.width, canvas.height, this.room.width, this.room.height);
+        
+        // viewport rectangle
+        this.camera.screenView = new this.scene.Viewport(this.camera.xView, this.camera.yView, this.camera.wView, this.camera.hView);
+        
+        // world boundary rectangle
+        this.camera.worldRect = new this.scene.Viewport(0, 0, this.room.width, this.room.height);
+        
+        console.dir(this.camera);
+        
+        //this.scene.sceneTest();
         
         // -- UI ---
         this.hamIcon = document.querySelector("#hamIcon");
@@ -134,12 +246,12 @@ app.main = {
         // check for time passed
         var dt = this.calculateDeltaTime();
 
-        
         // draw scene
         console.log("drawing scene");
         this.drawScene(this.ctx);
         
-        //this.test();
+        /*
+        this.test();
         console.log("testing: bg");
 		this.ctx.fillStyle = "black"; 
 		this.ctx.fillRect(0,0,this.WIDTH,this.HEIGHT); 
@@ -152,6 +264,7 @@ app.main = {
         this.ctx.fillStyle = "red";
         this.ctx.fill();
         this.ctx.restore();
+        */
     },
     
     // debug
