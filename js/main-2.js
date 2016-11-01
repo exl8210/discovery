@@ -424,9 +424,10 @@ app.main = {
         ctx.fillRect(0, 0, this.WIDTH, this.HEIGHT);
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(this.ctx, "paused", this.WIDTH/2, this.HEIGHT/2, "40pt helvetica", "white");
         ctx.fillStyle = "white";
+        ctx.fillText(this.ctx, "paused.", this.WIDTH/2, this.HEIGHT/2, "40pt helvetica", "white");
         ctx.restore();
+        //console.log("paused drawn");
     },
     
     // audio
