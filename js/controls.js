@@ -23,16 +23,17 @@ controls.keydown = [];
 
 // --- Event listeners
 window.addEventListener("keydown",function(e){
-	//console.log("keydown=" + e.keyCode);
+	console.log("keydown=" + e.keyCode);
 	controls.keydown[e.keyCode] = true;
 });
 	
 window.addEventListener("keyup",function(e){
-	//console.log("keyup=" + e.keyCode);
+	console.log("keyup=" + e.keyCode);
 	controls.keydown[e.keyCode] = false;
     
 	var char = String.fromCharCode(e.keyCode);
-	
+	console.log(char);
+    
 	// pausing and resuming
 	if (char == "p" || char == "P"){
 		if (app.main.paused){
@@ -43,16 +44,18 @@ window.addEventListener("keyup",function(e){
 	}
     
     // moving left and right
-    if (char == "KEY_RIGHT") {
+    if (char == "'") {
         // scroll to the right
-        
-        app.scene.changeDirection("r");
+
+        console.log("move right");
+        app.main.changeDirection("r");
     }
     
-    if (char == "KEY_LEFT") {
+    if (char == "%") {
         // scroll to the left
         
-        app.scene.changeDirection("l");
+        console.log("move left");
+        app.main.changeDirection("l");
     }
     
     // moving quicker

@@ -46,3 +46,7 @@ canvas#scrollCanvas {
     position: relative;
 }
 
+.uiButton {
+    z-index: 2;
+    position: absolute;
+}

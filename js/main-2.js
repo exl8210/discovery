@@ -8,7 +8,7 @@ var app = app || {};
 app.main = {
     // --- Variables
     // canvases
-    WIDTH: 1280,
+    WIDTH: 680,
     HEIGHT: 460,
     canvas: undefined,
     ctx: undefined,
@@ -39,7 +39,7 @@ app.main = {
     // scene
     //scene: undefined,
     room: {
-        width: 1280,
+        width: 680,
         height: 460,
         map: undefined,
     },
@@ -59,6 +59,17 @@ app.main = {
         screenView: undefined,
         worldRect: undefined,
         
+        // directions
+        speed: 5,
+        quickSpeed: false,
+        quickMultiplier: 2,
+        DIRECTION: Object.freeze({
+            STATIC: 0,
+            LEFT: 1,
+            RIGHT: 2
+        }),
+        direction: this.DIRECTION.STATIC,
+
         // functions
         update: function(step) {
             // update screenView
@@ -237,6 +248,9 @@ app.main = {
         // check for time passed
         var dt = this.calculateDeltaTime();
         
+        // update camera
+        this.camera.update(dt);
+        
         // draw scene
         //console.log("drawing scene");
         this.drawScene(this.ctx);
@@ -305,8 +319,37 @@ app.main = {
 
         // redraw all objects
         this.room.map.draw(ctx, this.camera.xView, this.camera.yView);	
-        
     },
+    
+    
+    changeDirection: function(dir) {
+        if (this.dir == "r") {
+            console.log("move right");
+            this.camera.direction = 2;
+        }
+
+        if (this.dir == "l") {
+            console.log("move left");
+            this.camera.direction = 1;
+        }
+    },
+
+    toggleQuick: function() {
+        if (this.camera.quickSpeed == false) {
+            this.camera.quickSpeed = true;
+        }
+        else {
+            this.camera.quickSpeed == false;
+        }
+
+        this.goQuickly();
+    },
+
+    goQuickly: function() {
+        console.log("quack");
+        this.camera.speed *= this.camera.quickMultiplier;
+    },
+
     
     // === TESSSSTTTTTT
     test: function() {

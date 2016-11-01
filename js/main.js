@@ -8,7 +8,7 @@ var app = app || {};
 app.main = {
     // --- Variables
     // canvases
-    WIDTH: 1280,
+    WIDTH: 680,
     HEIGHT: 460,
     canvas: undefined,
     ctx: undefined,
@@ -39,7 +39,7 @@ app.main = {
     // scene
     //scene: undefined,
     room: {
-        width: 1280,
+        width: 680,
         height: 460,
         map: undefined,
     },

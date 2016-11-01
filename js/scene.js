@@ -185,12 +185,39 @@ app.scene = (function(){
         this.worldRect = new this.Viewport(0, 0, worldWidth, worldHeight);
     }
     
+    Camera.prototype.update = function(step)
+    {
+        // update screenView
+        if(Game.controls.left)
+            this.xView -= this.speed * step;
+        if(Game.controls.right)
+            this.xView += this.speed * step;
+
+        this.screenView.set(this.xView, this.yView);
+
+        // don't let camera leaves the world's boundary
+        if(!this.screenView.within(this.worldRect))
+        {
+            if(this.screenView.left < this.worldRect.left)
+                this.xView = this.worldRect.left;
+            if(this.screenView.top < this.worldRect.top)					
+                this.yView = this.worldRect.top;
+            if(this.screenView.right > this.worldRect.right)
+                this.xView = this.worldRect.right - this.wView;
+            if(this.screenView.bottom > this.worldRect.bottom)					
+                this.yView = this.worldRect.bottom - this.hView;
+        }
+
+    }	
+    
     function changeDirection(dir) {
         if (this.dir == "r") {
+            console.log("move right");
             this.direction = 2;
         }
 
         if (this.dir == "l") {
+            console.log("move left");
             this.direction = 1;
         }
     }
