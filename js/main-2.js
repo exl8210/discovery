@@ -68,8 +68,8 @@ app.main = {
             LEFT: 1,
             RIGHT: 2
         }),
-        direction: this.DIRECTION.STATIC,
-
+        direction: undefined,
+        
         // functions
         update: function(step) {
             // update screenView
@@ -165,14 +165,16 @@ app.main = {
     
     /*
     // scene scrolling
-    speed: 50,
+    speed: 5,
     quickSpeed: false,
     DIRECTION: Object.freeze({
         STATIC: 0,
         LEFT: 1,
         RIGHT: 2
     }),
+    direction: this.DIRECTION.STATIC,
     */
+    
 
     // --- Methods
     // initialise main
@@ -197,6 +199,9 @@ app.main = {
         this.expState = this.EXP_STATE.BEGIN;
         //this.expState = this.EXP_STATE.SPACE;
         
+        // hook up events
+        this.interface.onmousedown = this.canvas.onmousedown = this.doMouseDown.bind(this);
+        
         // --- initialise audio
         this.bgAudio = document.querySelector("#bgAudio");
         this.bgAudio.volume = 0.25;
@@ -212,6 +217,9 @@ app.main = {
         
         // set up camera
         //this.camera = this.scene.Camera(0, 0, this.canvas.width, this.canvas.height, this.room.width, this.room.height);
+        
+        // direction
+        this.camera.direction = this.camera.DIRECTION.STATIC;
         
         // viewport rectangle
         this.camera.screenView = new this.scene.Viewport(this.camera.xView, this.camera.yView, this.camera.wView, this.camera.hView);
@@ -241,7 +249,7 @@ app.main = {
         
         // check for pause state
         if (this.paused) {
-            // draw pause screen?
+            this.drawPauseScreen(this.ctx);
             return;
         }
         
@@ -249,11 +257,12 @@ app.main = {
         var dt = this.calculateDeltaTime();
         
         // update camera
-        this.camera.update(dt);
+        //this.camera.update(dt);
         
         // draw scene
         //console.log("drawing scene");
         this.drawScene(this.ctx);
+        this.drawUI(this.ctx);
         
         /*
         //this.test();
@@ -282,7 +291,30 @@ app.main = {
         this.STEP = 1/fps;
 		return 1/fps;
 	},
-    
+    /*
+    // canvas scrolling/panning
+    sceneScroll: function() {
+        if(this.direction == this.DIRECTION.LEFT)
+            this.camera.xView -= this.speed * this.step;
+        if(this.direction == this.DIRECTION.RIGHT)
+            this.camera.xView += this.speed * this.step;
+
+        this.camera.screenView.set(this.camera.xView, this.camera.yView);
+
+        // don't let camera leaves the world's boundary
+        if(!this.camera.screenView.within(this.worldRect))
+        {
+            if(this.camera.screenView.left < this.camera.worldRect.left)
+                this.camera.xView = this.camera.worldRect.left;
+            if(this.camera.screenView.top < this.camera.worldRect.top)
+                this.camera.yView = this.camera.worldRect.top;
+            if(this.camera.screenView.right > this.camera.worldRect.right)
+                this.camera.xView = this.camera.worldRect.right - this.camera.wView;
+            if(this.camera.screenView.bottom > this.camera.worldRect.bottom)					
+                this.camera.yView = this.camera.worldRect.bottom - this.camera.hView;
+        }
+    },
+    */
     // play/pause
     pause: function() {
         // set boolean to true
@@ -317,10 +349,16 @@ app.main = {
         // clear the entire canvas
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // redraw all objects
-        this.room.map.draw(ctx, this.camera.xView, this.camera.yView);	
+        if (this.expState != this.EXP_STATE.BEGIN) {
+            if (this.expState == this.EXP_STATE.SPACE) {
+                
+            }
+            
+            // redraw all objects
+            this.room.map.draw(ctx, this.camera.xView, this.camera.yView);	
+        }
+        
     },
-    
     
     changeDirection: function(dir) {
         if (this.dir == "r") {
@@ -365,15 +403,30 @@ app.main = {
     // UI & screens
     drawUI: function(ctx) {
         // intro
-        
-        
-        // home
-        
-        
-        // space
-        
-        
-        // underwater
+        if (this.expState == this.EXP_STATE.BEGIN) {
+            ctx.save();
+            ctx.fillStyle = "pink";
+            ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            
+            ctx.fillText(this.ctx, "D I S C O V E R Y", 200, 200, "32pt helvetica", "#FFFFFF");
+            ctx.fillText(this.ctx, "Click anywhere to start!", this.canvas.width/2, this.canvas.height/2 + 100, "16pt helvetica", "#232323");
+            ctx.restore();
+        }
+    },
+    
+    // pause
+    drawPauseScreen: function(ctx) {
+        ctx.save();
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, this.WIDTH, this.HEIGHT);
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(this.ctx, "paused", this.WIDTH/2, this.HEIGHT/2, "40pt helvetica", "white");
+        ctx.fillStyle = "white";
+        ctx.restore();
     },
     
     // audio
@@ -407,8 +460,8 @@ app.main = {
         };
         
         // title screen
-        if (this.gameState == this.GAME_STATE.BEGIN) {
-            this.gameState = this.GAME_STATE.DEFAULT;
+        if (this.expState == this.EXP_STATE.BEGIN) {
+            this.expState = this.EXP_STATE.SPACE;
             
             return;
         }
