@@ -27,7 +27,7 @@ app.scene = (function(){
         image: null,
         
         // functions
-        generate: function() {
+        generate: function(scene) {
             //console.log("hello map");
             
             var ctx = document.createElement("canvas").getContext("2d");		
@@ -35,16 +35,37 @@ app.scene = (function(){
             ctx.canvas.height = this.height;		
 
             ctx.save();			
-            ctx.fillStyle = "#232323";		    
-            ctx.fillRect(0, 0, this.width, this.height);
+            
+            switch (scene) {
+                case app.main.EXP_STATE.HOME:
+                    ctx.fillStyle = "#b18c71";		    
+                    ctx.fillRect(0, 0, this.width, this.height);
+                    
+                    break;
+                    
+                case app.main.EXP_STATE.SPACE:
+                    ctx.fillStyle = "#232323";		    
+                    ctx.fillRect(0, 0, this.width, this.height);
 
-            for (var i = 0; i < this.width*0.25; i++) {
-                ctx.fillStyle = "rgba(255, 255, 255, " + getRandom(0, 1) + ")";
-                ctx.beginPath();
-                ctx.arc(getRandom(0, this.width), getRandom(0, this.height), getRandom(1, getRandom(1, 3)), 0, Math.PI*2, false);
-                ctx.closePath();
-                ctx.fill();
+                    for (var i = 0; i < this.width*0.25; i++) {
+                        ctx.fillStyle = "rgba(255, 255, 255, " + getRandom(0, 1) + ")";
+                        ctx.beginPath();
+                        ctx.arc(getRandom(0, this.width), getRandom(0, this.height), getRandom(1, getRandom(1, 3)), 0, Math.PI*2, false);
+                        ctx.closePath();
+                        ctx.fill();
+                    }
+                    
+                    break;
+                    
+                case app.main.EXP_STATE.UNDERWATER:
+                    ctx.fillStyle = "#6aeaef";		    
+                    ctx.fillRect(0, 0, this.width, this.height);
+                    
+                    break;
             }
+            
+            
+            
             ctx.restore();	
 
             // store the generate map as this image texture

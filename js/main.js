@@ -94,8 +94,11 @@ app.main = {
         // map
         this.room.map = this.scene.map;
         
-        // generate large image texture
-        this.room.map.generate();
+        // generate large image texture --> the first one should be HOME
+        this.room.map.generate(this.EXP_STATE.HOME);
+        // *** EVERY TIME ANOTHER SCENE IS SELECTED, WE HAVE TO REGENERATE THE MAP ***
+        // capture selection --> pass into generate using: 
+        // this.room.map.generate(this.expState);
         
         // movement
         this.speed = this.INIT_SPEED;
@@ -159,7 +162,6 @@ app.main = {
         }
         
         // draw scene
-        //console.log("drawing scene");
         this.drawScene(this.ctx);
         this.drawUI(this.ctx);
     },
@@ -210,10 +212,6 @@ app.main = {
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         if (this.expState != this.EXP_STATE.BEGIN) {
-            if (this.expState == this.EXP_STATE.SPACE) {
-                
-            }
-            
             // redraw all objects
             this.room.map.draw(ctx, this.camera.xView, this.camera.yView);	
         }
@@ -277,7 +275,6 @@ app.main = {
         ctx.fillStyle = "white";
         ctx.fillText(this.ctx, "paused.", this.WIDTH/2, this.HEIGHT/2, "40pt helvetica", "white");
         ctx.restore();
-        //console.log("paused drawn");
     },
     
     // audio
