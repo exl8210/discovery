@@ -24,6 +24,9 @@ window.onload = function(){
     //app.scene.loop();
     app.main.scene = app.scene;
     
+    //hook up sprites
+    app.main.sprite = app.sprite;
+    
     // load main app
 	app.main.init();
 }

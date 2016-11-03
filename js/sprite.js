@@ -7,13 +7,37 @@ var app = app || {};
 (function () {
     var alien,
         alienImg,
+        fish,
+        fishImg,
+        fire,
+        fireImg,
         canvas;
     
     function gameLoop(){
         window.requestAnimationFrame(gameLoop);
         
-        alien.update();
-        alien.render();
+        //When in space gamestate
+        if(app.main.expState == app.main.EXP_STATE.SPACE){ 
+            alien.update();
+            alien.render();
+            console.log("alien says (@*#");
+        }
+        
+        /*
+        //when in underwater gamestate
+        if(app.main.expState == app.main.EXP_STATE.UNDERWATER){
+            fish.update();
+            fish.render();
+            console.log("fish says blub");
+        }
+        
+        //when in home gamestate
+        if(app.main.expState == app.main.EXP_STATE.HOME){
+            fire.update();
+            fire.render();
+            console.log("fire says crackle");
+        }
+        */
         
         //console.log("hello sprite");
     }
@@ -57,6 +81,13 @@ var app = app || {};
             that.context.drawImage(that.image, frameIndex * that.width / numberOfFrames, 0, that.width / numberOfFrames, that.height, 0, 0, that.width/numberOfFrames, that.height);
         };
         
+        //pause frames
+        that.pause = function(){
+            tickCount = 0;
+            ticksPerFrame = 0;
+            frameIndex = 0;
+        }
+        
         return that;
         
     }
@@ -66,10 +97,12 @@ var app = app || {};
     canvas.width = 300;
     canvas.height = 123;
     
-    //cerate the sprite sheet
+    //create the sprite sheets
     alienImg = new Image();
+    fishImg = new Image();
+    fireImg = new Image();
     
-    //create sprite
+    //create alien sprites
     alien = sprite({
         context: canvas.getContext("2d"),
         width: 499,
@@ -79,9 +112,28 @@ var app = app || {};
         ticksPerFrame: 7
     });
     
-    //load sprite sheet
+    /*
+    //create fish sprites
+    fish = sprite({
+    });
+    
+    //create fire sprites
+    fire = sprite({
+    });
+    */
+    
+    //load alien sprite sheet
     alienImg.addEventListener("load", gameLoop);
     alienImg.src="images/alienSprite.png";
-
+    
+    /*
+    //load fish sprite sheet
+    fishImg.addEventListener("load", gameLoop);
+    fishImg.src="";
+    
+    //load fire sprite sheet
+    fireImg.addEventListener("load", gameLoop);
+    fireImg.src="";
+    */
 
 } ());
