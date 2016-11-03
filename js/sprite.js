@@ -21,14 +21,6 @@ var app = app || {};
             alien.update();
             alien.render();
             console.log("alien says (@*#");
-
-            /*
-            //if state is paused
-            if(app.main.paused == true){
-                alien.pause();
-            }
-            */
-
         }
         
         
@@ -37,6 +29,7 @@ var app = app || {};
             fish.update();
             fish.render();
             console.log("fish says blub");
+
         }
         
         //when in home gamestate
@@ -93,20 +86,6 @@ var app = app || {};
             that.context.drawImage(that.image, frameIndex * that.sheetWidth / numberOfFrames, 0, that.sheetWidth / numberOfFrames, that.sheetHeight, that.xPos, that.yPos, that.sheetWidth/numberOfFrames, that.sheetHeight);
         };
         
-        /*
-        //pause frames
-        that.pause = function(){
-            //stop animation
-            window.cancelAnimationFrame(gameLoop);
-            
-            tickCount = 0;
-            ticksPerFrame = 0;
-            frameIndex = 0;
-            
-            //console.log("paused");  
-        }
-        */
-        
         return that;
         
     }
@@ -141,7 +120,7 @@ var app = app || {};
         sheetHeight: 123,
         xPos: canvas.width/2,
         yPos: canvas.height/2,
-        image: alienImg,
+        image: fishImg,
         numberOfFrames: 3,
         ticksPerFrame: 7
     });
@@ -151,7 +130,7 @@ var app = app || {};
         context: canvas.getContext("2d"),
         sheetWidth: 499,
         sheetHeight: 123,
-        image: alienImg,
+        image: fireImg,
         xPos: canvas.width/2,
         yPos: canvas.height/2,
         numberOfFrames: 3,
