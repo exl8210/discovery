@@ -259,8 +259,13 @@ app.main = {
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             
-            ctx.fillText(this.ctx, "D I S C O V E R Y", 200, 200, "32pt helvetica", "#FFFFFF");
-            ctx.fillText(this.ctx, "Click anywhere to start!", this.canvas.width/2, this.canvas.height/2 + 100, "16pt helvetica", "#232323");
+            ctx.fillStyle = "white";
+            ctx.font = "32pt Helvetica";
+            ctx.fillText("D I S C O V E R Y", this.canvas.width/2, this.canvas.height/2 - 30);
+            
+            ctx.fillStyle = "#4a4a4a";
+            ctx.font = "16pt Helvetica";
+            ctx.fillText("click anywhere to start exploring!", this.canvas.width/2, this.canvas.height/2 + 30);
             ctx.restore();
         }
     },

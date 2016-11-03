@@ -64,8 +64,6 @@ app.scene = (function(){
                     break;
             }
             
-            
-            
             ctx.restore();	
 
             // store the generate map as this image texture
