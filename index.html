@@ -7,36 +7,39 @@
 	<title>D I S C O V E R Y</title>
 </head>
 <body>    
+    <!-- UI: Navigation -->
     <div id="sideNav" class="nav">
-        
-    <a href="javascript:void(0)" class="close" onclick="slideBack()">&times;</a>
-        
-        <h1>Where do you want to go?</h1>
-        
-        <form id="buttons">
-        <li>
-        <input id ="underwaterState" type="radio" name="game_state" value="underwater"> Underwater <br>
-        </li>
-        <li>
-        <input id="spaceState" type="radio" name="game_state" value="space"> Space <br>
-        </li>
-        <li>
-        <input id="homeState" type="radio" name="game_state" value="home"> Home <br>
-        </li>
-        </form>
-        
-            
-    <div id="about">
-        <h2>About the Developers</h2>
-        <p>Made with &hearts; by Ethelia Lung and Abbey Lee</p>
-        <p id="subtitle">(and blood, sweat, tears, and copious amounts of coffee) &#9786;</p>
-    </div>
-        
+
+        <a href="javascript:void(0)" class="close" onclick="slideBack()">&times;</a>
+
+            <h1>Where do you want to go?</h1>
+
+            <form id="buttons">
+                <li>
+                <input id="homeState" type="radio" name="game_state" value="home" />
+                    <label for="homeState">Home</label>
+                </li>
+                <li>
+                <input id="spaceState" type="radio" name="game_state" value="space" />
+                    <label for="spaceState">Space</label>
+                </li>
+                <li>
+                <input id ="underwaterState" type="radio" name="game_state" value="underwater" />
+                    <label for="underwaterState">Underwater</label>
+                </li>
+            </form>
+
+        <div id="about">
+            <h2>About the Developers</h2>
+            <p>Made with &hearts; by Ethelia Lung and Abbey Lee</p>
+            <p id="subtitle">(and blood, sweat, tears, and copious amounts of coffee) &#9786;</p>
+        </div>
+
     </div>
 
-    
-    <span style="font-size: 30px;" onclick="slideOut()">&#9776;</span>
+    <span id="hamIcon" onclick="slideOut()">&#9776;</span>
 
+    <!-- Canvases -->
     <canvas id="spriteCanvas" width="680" height="460">
         This is the Sprite canvas. Get a real browser!
     </canvas>
@@ -45,11 +48,13 @@
 		This is the scrolling canvas. Get a real browser!
 	</canvas>
     
+    <!-- UI: Audio -->
     <section id="audioControls">
         <audio id="bgAudio" src="assets/sound/background.mp3" controls loop></audio>
         <audio id="effectAudio" controls></audio>
     </section>
     
+    <!-- JavaScript -->
 	<script src='js/utilities.js'></script>
 	<script src='js/scene.js'></script>
 	<script src='js/sound.js'></script>
@@ -58,8 +63,6 @@
 	<script src='js/loader.js'></script>
     <script src='js/sprite.js'></script>
     <script src="js/ui.js"></script>
-
-   
 
 </body>
 </html>

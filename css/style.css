@@ -47,8 +47,7 @@ h1 {
 
 h2{
     font-size: 30px; 
-    padding-left: 30px;
-    padding-top:20px;
+    padding: 20px 0 30px 30px;
     display: block;
     color: darkgrey;
 }
@@ -73,7 +72,7 @@ p{
     text-decoration: none;
     padding-left: 30px;
     padding-top:30px;
-    font-size: 25px;
+    font-size: 20px;
     color: #818181;
     display: block;
     transition: 0.3s;
@@ -84,25 +83,38 @@ p{
     color: cadetblue;
 }
 
+input[type="radio"] {
+    margin-top: -5px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
 li{
    list-style-type: none;
+    padding-bottom: 15px;
 }
 
 li:hover{
     color: #00b3b3;
 }
 
-
-
 .radio{
     padding-top: 20px;
 }
 
+#hamIcon {
+    z-index: 3;
+    position: absolute;
+    color: #fff;
+    font-size: 30px;
+    top: 5px;
+    left: 15px;
+}
 
 .nav .close{
     position:absolute;
     top: 0;
-    right: 25px;
+    right: 15px;
     font-size: 36px;
     margin-left: 50px;
     color: black;
@@ -117,16 +129,11 @@ li:hover{
 }
 
 #about {
-    margin-top: 50%;
+    position: absolute;
+    bottom: 60px;
 }
 
 /* Components */
-
-canvas#uiCanvas {
-    background-color: rgba(255, 255, 255, 0);
-    z-index: 2;
-    position: absolute;
-}
 
 canvas#spriteCanvas {
     background-color: rgba(255, 255, 255, 0);
@@ -144,9 +151,4 @@ canvas#scrollCanvas {
     /*display: none;*/
     top: 480px;
     position: relative;
-}
-
-.uiButton {
-    z-index: 2;
-    position: absolute;
 }
