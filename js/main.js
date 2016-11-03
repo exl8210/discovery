@@ -12,6 +12,8 @@ app.main = {
     HEIGHT: 460,
     canvas: undefined,
     ctx: undefined,
+    topCanvas: undefined,
+    topCtx: undefined,
     lastTime: 0,
     debug: false,
     paused: false,
@@ -35,7 +37,6 @@ app.main = {
     sound: undefined,
     
     // scene
-    //scene: undefined,
     room: {
         width: 1280,
         height: 460,
@@ -74,15 +75,20 @@ app.main = {
 		this.canvas = document.querySelector('#scrollCanvas');
 		this.canvas.width = this.WIDTH;
 		this.canvas.height = this.HEIGHT;
-        //console.log(this.canvas.width + ", " + this.canvas.height);
 		this.ctx = this.canvas.getContext('2d');
+        
+        // --- initialise top canvas properties
+		this.topCanvas = document.querySelector('#topCanvas');
+		this.topCanvas.width = this.WIDTH;
+		this.topCanvas.height = this.HEIGHT;
+		this.topCtx = this.topCanvas.getContext('2d');
         
         // --- initialise experience
         this.expState = this.EXP_STATE.BEGIN;
         //this.expState = this.EXP_STATE.SPACE;
         
         // hook up events
-        this.canvas.onmousedown = this.doMouseDown.bind(this);
+        this.topCanvas.onmousedown = this.canvas.onmousedown = this.doMouseDown.bind(this);
         
         // --- initialise audio
         this.bgAudio = document.querySelector("#bgAudio");
@@ -128,14 +134,34 @@ app.main = {
         
         // check for pause state
         if (this.paused) {
-            this.drawPauseScreen(this.ctx);
+            this.drawPauseScreen(this.topCtx);
             return;
         }
         
         // check for time passed
         var dt = this.calculateDeltaTime();
         
+        // set up sprite references
+        var sprite = this.sprite;
+        var activeSprite;
+        
+        switch(this.expState) {
+            case this.EXP_STATE.HOME:
+                activeSprite = sprite.fire;
+                break;
+
+            case this.EXP_STATE.SPACE:
+                activeSprite = sprite.alien;
+                break;
+
+            case this.EXP_STATE.UNDERWATER:
+                activeSprite = sprite.fish;
+                break;
+        }
+        
         // check keypress for scrolling
+        // scroll background one direction and sprites in the other direction
+        // (illusion of movement :P)
         var cam = this.camera;
         
         if (this.expState != this.EXP_STATE.BEGIN) {
@@ -147,16 +173,28 @@ app.main = {
             }
             
             if (this.isMovingRight) {
+                // check for right boundary
                 if (cam.xView < (this.room.map.width - this.WIDTH)) {
                     cam.xView += this.speed;
-                    console.log(this.camera.xView);
+                    //console.log(this.camera.xView);
+                    
+                    activeSprite.xPos -= this.speed;
+                }
+                else {
+                    cam.xView = this.room.map.width - this.WIDTH;
                 }
             }
             
             if (this.isMovingLeft) {
+                // check for left boundary
                 if (cam.xView > 0) {
                     cam.xView -= this.speed;
-                    console.log(this.camera.xView);
+                    //console.log(this.camera.xView);
+                    
+                    activeSprite.xPos += this.speed;
+                }
+                else {
+                    cam.xView = 0;
                 }
             }
         }
@@ -210,6 +248,7 @@ app.main = {
     drawScene: function(ctx) {
         // clear the entire canvas
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.topCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         if (this.expState != this.EXP_STATE.BEGIN) {
             // redraw all objects
@@ -224,6 +263,7 @@ app.main = {
         
         cam.xView -= this.speed;
         cam.screenView.set(cam.xView, cam.yView);
+        
         
     },
 
@@ -259,22 +299,34 @@ app.main = {
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             
-            ctx.fillText(this.ctx, "D I S C O V E R Y", 200, 200, "32pt helvetica", "#FFFFFF");
-            ctx.fillText(this.ctx, "Click anywhere to start!", this.canvas.width/2, this.canvas.height/2 + 100, "16pt helvetica", "#232323");
+            ctx.fillStyle = "white";
+            ctx.font = "32pt Helvetica";
+            ctx.fillText("D I S C O V E R Y", this.canvas.width/2, this.canvas.height/2 - 30);
+            
+            ctx.fillStyle = "#4a4a4a";
+            ctx.font = "16pt Helvetica";
+            ctx.fillText("click anywhere to start exploring!", this.canvas.width/2, this.canvas.height/2 + 30);
             ctx.restore();
         }
     },
     
     // pause
     drawPauseScreen: function(ctx) {
-        ctx.save();
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, this.WIDTH, this.HEIGHT);
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = "white";
-        ctx.fillText(this.ctx, "paused.", this.WIDTH/2, this.HEIGHT/2, "40pt helvetica", "white");
-        ctx.restore();
+        this.topCtx.save();
+        this.topCtx.fillStyle = "black";
+        this.topCtx.fillRect(0, 0, this.WIDTH, this.HEIGHT);
+        
+        this.topCtx.textAlign = "center";
+        this.topCtx.textBaseline = "middle";
+        
+        this.topCtx.fillStyle = "white";
+        this.topCtx.font = "40pt Helvetica";
+        this.topCtx.fillText("you stepped away.", this.WIDTH/2, this.HEIGHT/2 - 30);
+        
+        this.topCtx.fillStyle = "#333";
+        this.topCtx.font = "14pt Helvetica";
+        this.topCtx.fillText("COME BACK SOON? :(", this.WIDTH/2, this.HEIGHT/2 + 30);
+        this.topCtx.restore();
     },
     
     // audio

@@ -4,7 +4,7 @@
 // else create a new object literal
 var app = app || {};
 
-(function () {
+app.sprite = (function () {
     var alien,
         alienImg,
         fish,

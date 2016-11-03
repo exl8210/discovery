@@ -37,7 +37,6 @@ app.main = {
     sound: undefined,
     
     // scene
-    //scene: undefined,
     room: {
         width: 1280,
         height: 460,
@@ -142,7 +141,27 @@ app.main = {
         // check for time passed
         var dt = this.calculateDeltaTime();
         
+        // set up sprite references
+        var sprite = this.sprite;
+        var activeSprite;
+        
+        switch(this.expState) {
+            case this.EXP_STATE.HOME:
+                activeSprite = sprite.fire;
+                break;
+
+            case this.EXP_STATE.SPACE:
+                activeSprite = sprite.alien;
+                break;
+
+            case this.EXP_STATE.UNDERWATER:
+                activeSprite = sprite.fish;
+                break;
+        }
+        
         // check keypress for scrolling
+        // scroll background one direction and sprites in the other direction
+        // (illusion of movement :P)
         var cam = this.camera;
         
         if (this.expState != this.EXP_STATE.BEGIN) {
@@ -154,16 +173,28 @@ app.main = {
             }
             
             if (this.isMovingRight) {
+                // check for right boundary
                 if (cam.xView < (this.room.map.width - this.WIDTH)) {
                     cam.xView += this.speed;
-                    console.log(this.camera.xView);
+                    //console.log(this.camera.xView);
+                    
+                    activeSprite.xPos -= this.speed;
+                }
+                else {
+                    cam.xView = this.room.map.width - this.WIDTH;
                 }
             }
             
             if (this.isMovingLeft) {
+                // check for left boundary
                 if (cam.xView > 0) {
                     cam.xView -= this.speed;
-                    console.log(this.camera.xView);
+                    //console.log(this.camera.xView);
+                    
+                    activeSprite.xPos += this.speed;
+                }
+                else {
+                    cam.xView = 0;
                 }
             }
         }
@@ -232,6 +263,7 @@ app.main = {
         
         cam.xView -= this.speed;
         cam.screenView.set(cam.xView, cam.yView);
+        
         
     },
 
