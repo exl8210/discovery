@@ -166,8 +166,10 @@ app.scene = (function(){
     }
     
     // === Camera
+    /*
     function Camera(xView, yView, canvasWidth, canvasHeight, worldWidth, worldHeight)
     {
+        
         console.log("hello camera");
         
         // position of camera (left-top coordinate)
@@ -183,8 +185,10 @@ app.scene = (function(){
 
         // rectangle that represents the world's boundary (room's boundary)
         this.worldRect = new this.Viewport(0, 0, worldWidth, worldHeight);
+        
     }
-    
+    */
+    /*
     Camera.prototype.update = function(step)
     {
         // update screenView
@@ -237,7 +241,7 @@ app.scene = (function(){
         console.log("quack");
         this.speed *= this.quickMultiplier;
     }
-
+*/
     
     // === test
     function sceneTest() {
@@ -248,10 +252,10 @@ app.scene = (function(){
         //camera: camera,
         map: map,
         Viewport: Viewport,
-        Camera: Camera,
-        changeDirection: changeDirection,
-        toggleQuick: toggleQuick,
-        goQuickly: goQuickly,
+        //Camera: Camera,
+        //changeDirection: changeDirection,
+        //toggleQuick: toggleQuick,
+        //goQuickly: goQuickly,
         sceneTest: sceneTest,
     };
     
