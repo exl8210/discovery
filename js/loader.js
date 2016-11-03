@@ -14,7 +14,7 @@ var app = app || {};
 
 // --- Load main app
 window.onload = function(){
-	console.log("window.onload called");
+	//console.log("window.onload called");
     
     // hook up the sound
     app.sound.init();
@@ -23,9 +23,6 @@ window.onload = function(){
     // hook up the scene
     //app.scene.loop();
     app.main.scene = app.scene;
-    
-    console.dir(app);   
-    console.dir(app.main);   
     
     // load main app
 	app.main.init();

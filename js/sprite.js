@@ -15,7 +15,7 @@ var app = app || {};
         alien.update();
         alien.render();
         
-        console.log("hello sprite");
+        //console.log("hello sprite");
     }
     
     function sprite(options){

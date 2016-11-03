@@ -8,7 +8,7 @@ var app = app || {};
 app.main = {
     // --- Variables
     // canvases
-    WIDTH: 680,
+    WIDTH: 1280,
     HEIGHT: 460,
     canvas: undefined,
     ctx: undefined,
@@ -39,7 +39,7 @@ app.main = {
     // scene
     //scene: undefined,
     room: {
-        width: 680,
+        width: 1280,
         height: 460,
         map: undefined,
     },
@@ -97,10 +97,11 @@ app.main = {
         */
     },
     
+    /*
     // map
     map: {
         // dimensions
-        width: 3000,
+        width: 1920 * 5,
         height: 460,
         
         // map texture
@@ -164,23 +165,21 @@ app.main = {
             context.drawImage(this.image, cx, cy, cWidth, cHeight, dx, dy, dWidth, dHeight);
         },
     },
-    
+    */
     
     // scene scrolling
-    speed: 5,
-    quickSpeed: false,
-    DIRECTION: Object.freeze({
-        STATIC: 0,
-        LEFT: 1,
-        RIGHT: 2
-    }),
-    direction: undefined,
+    INIT_SPEED: 2,
+    QUICK_SPEED: 10,
+    speed: undefined,
+    isMovingRight: false,
+    isMovingLeft: false,
+    isMovingQuickly: false,
     
 
     // --- Methods
     // initialise main
     init: function() {
-        console.log("main-2.js init called");
+        //console.log("main-2.js init called");
         
 		// --- initialise scroll canvas properties
 		this.canvas = document.querySelector('#scrollCanvas');
@@ -216,8 +215,8 @@ app.main = {
         // generate large image texture
         this.room.map.generate();
         
-        // set initial direction
-        this.direction = this.DIRECTION.STATIC;
+        // movement
+        this.speed = this.INIT_SPEED;
         
         // viewport rectangle
         this.camera.screenView = new this.scene.Viewport(this.camera.xView, this.camera.yView, this.camera.wView, this.camera.hView);
@@ -227,7 +226,7 @@ app.main = {
         
         console.dir(this.camera);
         
-        this.scene.sceneTest();
+        //this.scene.sceneTest();
         
         
         //-------SOUND----------
@@ -256,7 +255,32 @@ app.main = {
         
         // update camera
         //this.camera.update(dt);
+        //this.updateCamera(/*dt*/);
         
+        var cam = this.camera;
+        
+        if (this.expState != this.EXP_STATE.BEGIN) {
+            if (this.isMovingQuickly) {
+                this.speed = this.QUICK_SPEED;
+            }
+            else {
+                this.speed = this.INIT_SPEED;
+            }
+            
+            if (this.isMovingRight) {
+                if (cam.xView < (this.room.map.width - this.WIDTH)) {
+                    cam.xView += this.speed;
+                    console.log(this.camera.xView);
+                }
+            }
+            
+            if (this.isMovingLeft) {
+                if (cam.xView > 0) {
+                    cam.xView -= this.speed;
+                    console.log(this.camera.xView);
+                }
+            }
+        }
         
         // draw scene
         //console.log("drawing scene");
@@ -336,17 +360,19 @@ app.main = {
         
     },
     
-    updateCamera: function(step) {
-        var cam = this.camera;
+    updateCamera: function(/*step*/) {
+        //console.log("... changing camera view ...");
         
+        var cam = this.camera;
+        /*
         // update screenView
-        if(this.direction == this.DIRECTION.LEFT)
+        if(isMovingLeft())
             cam.xView -= this.speed * step;
-        if(this.direction == this.DIRECTION.RIGHT)
+        if(isMovingRight())
             cam.xView += this.speed * step;
-
-        cam.screenView.set(cam.xView, cam.yView);
-
+        
+        //cam.screenView.set(cam.xView, cam.yView);
+        
         // don't let camera leaves the world's boundary
         if(!cam.screenView.within(cam.worldRect))
         {
@@ -359,36 +385,28 @@ app.main = {
             if(cam.screenView.bottom > cam.worldRect.bottom)
                 cam.yView = cam.worldRect.bottom - cam.hView;
         }
+        */
+        //console.log(cam.xView);
     },
     
-    changeDirection: function(dir) {
-        if (this.dir == "r") {
-            console.log("move right");
-            this/*.camera*/.direction = 2;
-        }
-
-        if (this.dir == "l") {
-            console.log("move left");
-            this/*.camera*/.direction = 1;
-        }
+    moveLeft: function() {
+        var cam = this.camera;
+        console.log("move left");
+        
+        cam.xView -= this.speed;
+        cam.screenView.set(cam.xView, cam.yView);
+        
     },
 
-    toggleQuick: function() {
-        if (this/*.camera*/.quickSpeed == false) {
-            this/*.camera*/.quickSpeed = true;
-        }
-        else {
-            this/*.camera*/.quickSpeed == false;
-        }
+    moveRight: function() {
+        var cam = this.camera;
+        console.log("move right");
 
-        this.goQuickly();
+        cam.xView += this.speed;
+        cam.screenView.set(cam.xView, cam.yView);
+        
+        console.log(this.speed, cam.xView);
     },
-
-    goQuickly: function() {
-        console.log("quack");
-        this/*.camera*/.speed *= this/*.camera*/.quickMultiplier;
-    },
-
     
     // === TESSSSTTTTTT
     test: function() {

@@ -56,7 +56,7 @@ app.scene = (function(){
     // === Map
     var map = {
         // dimensions
-        width: 3000,
+        width: 1280 * 2,    // 2560px wide
         height: 460,
         
         // map texture
@@ -64,7 +64,7 @@ app.scene = (function(){
         
         // functions
         generate: function() {
-            console.log("hello map");
+            //console.log("hello map");
             
             var ctx = document.createElement("canvas").getContext("2d");		
             ctx.canvas.width = this.width;
@@ -127,7 +127,7 @@ app.scene = (function(){
     // --- Viewport constructor
     // - sets the sizes and parameters for the viewport
     function Viewport(left, top, width, height){
-        console.log("hello viewport");
+        //console.log("hello viewport");
         
         this.left = left || 0;
         this.top = top || 0;
@@ -136,7 +136,7 @@ app.scene = (function(){
         this.right = this.left + this.width;
         this.bottom = this.top + this.height;
         
-        console.log("viewport created: " + this.width + ", " + this.height);
+        //console.log("viewport created: " + this.width + ", " + this.height);
     }
     // --- Method for setting viewport parameters
 
