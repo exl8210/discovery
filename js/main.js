@@ -101,7 +101,7 @@ app.main = {
         this.room.map = this.scene.map;
         
         // generate large image texture --> the first one should be HOME
-        this.room.map.generate(this.EXP_STATE.SPACE);
+        this.room.map.generate(this.EXP_STATE.UNDERWATER);
         // *** EVERY TIME ANOTHER SCENE IS SELECTED, WE HAVE TO REGENERATE THE MAP ***
         // capture selection --> pass into generate using: 
         // this.room.map.generate(this.expState);

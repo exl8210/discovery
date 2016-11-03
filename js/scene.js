@@ -58,8 +58,62 @@ app.scene = (function(){
                     break;
                     
                 case app.main.EXP_STATE.UNDERWATER:
+                    var intervalSize = 300;
+                    var intervalNum = this.width/intervalSize;
+                    console.log(intervalNum);
+                    var third = this.height/3;
+                    
                     ctx.fillStyle = "#6aeaef";		    
                     ctx.fillRect(0, 0, this.width, this.height);
+                    ctx.lineWidth = 3;
+                    
+                    // middle
+                    ctx.fillStyle = "#53e4ea";
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(0, third);
+                    /*
+                    ctx.quadraticCurveTo(200, third-30, 400, third);
+                    ctx.quadraticCurveTo(600, third+30, 800, third);
+                    ctx.quadraticCurveTo(1000, third-30, 1200, third);
+                    ctx.quadraticCurveTo(1400, third+30, 1600, third);
+                    */
+                    for (var i = 1; i <= intervalNum+1; i += 2) {
+                        ctx.quadraticCurveTo((i*intervalSize)-intervalSize/2, third-30, i*intervalSize, third);
+                        
+                        ctx.quadraticCurveTo(((i+1)*intervalSize)-intervalSize/2, third+30, (i+1)*intervalSize, third);
+                    }
+                    ctx.quadraticCurveTo(this.width, third*2, this.width, this.height);
+                    ctx.quadraticCurveTo(this.width/2, this.height, 0, this.height);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    // bottom
+                    ctx.fillStyle = "#4adce2";
+                    
+                    ctx.save();
+                    
+                    ctx.translate(-intervalSize/2, 0);
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(0, third*2);
+                    /*
+                    ctx.quadraticCurveTo(200, third-30, 400, third);
+                    ctx.quadraticCurveTo(600, third+30, 800, third);
+                    ctx.quadraticCurveTo(1000, third-30, 1200, third);
+                    ctx.quadraticCurveTo(1400, third+30, 1600, third);
+                    */
+                    for (var i = 1; i <= intervalNum+1; i += 2) {
+                        ctx.quadraticCurveTo((i*intervalSize)-intervalSize/2, third*2-30, i*intervalSize, third*2);
+                        
+                        ctx.quadraticCurveTo(((i+1)*intervalSize)-intervalSize/2, third*2+30, (i+1)*intervalSize, third*2);
+                    }
+                    ctx.quadraticCurveTo(this.width+intervalSize, third*2, this.width+intervalSize, this.height);
+                    ctx.quadraticCurveTo(this.width/2, this.height, 0, this.height);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    ctx.restore();
                     
                     break;
             }
