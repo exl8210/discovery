@@ -21,7 +21,6 @@ window.onload = function(){
     app.main.sound = app.sound;
     
     // hook up the scene
-    //app.scene.loop();
     app.main.scene = app.scene;
     
     //hook up sprites

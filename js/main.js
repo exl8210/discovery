@@ -41,6 +41,7 @@ app.main = {
         width: 1280,
         height: 460,
         map: undefined,
+        offset: 0,  // used to check for object collision boundaries on scroll
     },
     STEP: undefined,
     
@@ -66,6 +67,23 @@ app.main = {
     isMovingRight: false,
     isMovingLeft: false,
     isMovingQuickly: false,
+    
+    // follower
+    follower: {
+        // object dimensions
+        width: 30,
+        height: 20,
+        
+        // position properties
+        xPos: undefined,
+        yPos: undefined,
+        xSpeed: undefined,
+        ySpeed: undefined,
+        step: 1,
+        isFollowing: false,
+        targetX: undefined,
+        targetY: undefined,
+    },
     
 
     // --- Methods
@@ -117,6 +135,14 @@ app.main = {
         
         console.dir(this.camera);
         
+        // follower
+        //this.follower.xPos = getRandom(0, this.canvas.width);
+        //this.follower.xPos = getRandom(0, this.canvas.height);
+        this.follower.xPos = 200;
+        this.follower.yPos = 200;
+        this.follower.xSpeed = getRandom(-2.0, 2.0);
+        this.follower.ySpeed = getRandom(-2.0, 2.0);
+        
         //-------SOUND----------
         // start with no audio
         this.sound.stopBGAudio();
@@ -165,6 +191,7 @@ app.main = {
         var cam = this.camera;
         
         if (this.expState != this.EXP_STATE.BEGIN) {
+            // toggle between quick and regular speed
             if (this.isMovingQuickly) {
                 this.speed = this.QUICK_SPEED;
             }
@@ -172,29 +199,49 @@ app.main = {
                 this.speed = this.INIT_SPEED;
             }
             
+            // if right key is pressed...
             if (this.isMovingRight) {
                 // check for right boundary
                 if (cam.xView < (this.room.map.width - this.WIDTH)) {
+                    // move camera
                     cam.xView += this.speed;
-                    //console.log(this.camera.xView);
                     
+                    // change world offset
+                    this.room.offset++;
+                    
+                    // move sprits and objects
                     activeSprite.xPos -= this.speed;
+                    this.follower.xPos -= this.speed;
                 }
                 else {
+                    // reposition camera at edge
                     cam.xView = this.room.map.width - this.WIDTH;
+                    
+                    // make sure offset is an appropriate amount
+                    this.room.offset = this.room.map.width - this.follower.width;
                 }
             }
             
+            // if left key is pressed...
             if (this.isMovingLeft) {
                 // check for left boundary
                 if (cam.xView > 0) {
+                    // move camera
                     cam.xView -= this.speed;
-                    //console.log(this.camera.xView);
                     
+                    // change world offset
+                    this.room.offset--;
+                    
+                    // move sprits and objects
                     activeSprite.xPos += this.speed;
+                    this.follower.xPos += this.speed;
                 }
                 else {
+                    // reposition camera at edge
                     cam.xView = 0;
+                    
+                    // make sure offset is an appropriate amount
+                    this.room.offset = 0;
                 }
             }
         }
@@ -250,45 +297,93 @@ app.main = {
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.topCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+        // refresh map
         if (this.expState != this.EXP_STATE.BEGIN) {
-            // redraw all objects
             this.room.map.draw(ctx, this.camera.xView, this.camera.yView);	
         }
         
+        // draw follower
+        this.drawFollower(ctx);
     },
     
-    moveLeft: function() {
-        var cam = this.camera;
-        console.log("move left");
+    // follower moving to target (mouse click)
+    drawFollower: function(ctx) {
+        var f = this.follower;
         
-        cam.xView -= this.speed;
-        cam.screenView.set(cam.xView, cam.yView);
+        if (f.isFollowing) {
+            if (f.xPos < f.targetX - f.width/2) {  // according to obj's centre
+                f.xPos += f.step;
+            }
+            else if (f.xPos > f.targetX - f.width/2) {
+                f.xPos -= f.step;
+            }
+            
+            if (f.yPos < f.targetY - f.height/2) {
+                f.yPos += f.step;
+            }
+            else if (f.yPos > f.targetY - f.height/2) {
+                f.yPos -= f.step;
+            }
+            
+            if(this.isWithin(f.xPos, f.yPos, f)) {
+                f.isFollowing = false;
+                
+                f.xSpeed *= -1;
+                f.ySpeed *= -1;
+            }
+        }
+        else {
+            // move object
+            f.xPos += f.xSpeed;
+            f.yPos += f.ySpeed;
+            
+            // collision detection (relative to map)
+            if (f.xPos <= 0 - this.room.offset) {
+                f.xPos = 0;
+                f.xSpeed *= -1;
+            }
+            
+            if (f.xPos >= this.room.map.width - f.width) {
+                f.xPos = this.room.map.width - f.width;
+                f.xSpeed *= -1;
+            }
+            
+            if (f.yPos <= 0) {
+                f.yPos = 0;
+                f.ySpeed *= -1;
+            }
+            
+            if (f.yPos >= this.room.map.height - f.height) {
+                f.yPos = this.room.map.height - f.height;
+                f.ySpeed *= -1;
+            }
+        }
         
+        ctx.fillStyle="white";
+        ctx.fillRect(f.xPos, f.yPos, f.width, f.height);
         
-    },
-
-    moveRight: function() {
-        var cam = this.camera;
-        console.log("move right");
-
-        cam.xView += this.speed;
-        cam.screenView.set(cam.xView, cam.yView);
-        
-        console.log(this.speed, cam.xView);
+        console.log("isFollowing = " + f.isFollowing);
     },
     
-    // === TESSSSTTTTTT
-    test: function() {
-        this.ctx.save();
-        this.ctx.beginPath();
-        this.ctx.arc(this.canvas.width/2, this.canvas.height/2, 50, 0, Math.PI*2, false);
-        this.ctx.closePath(0);
-        this.ctx.fillStyle = "red";
-        this.ctx.fill();
-        this.ctx.restore();
+    // collision detection between follower and target
+    isWithin: function(x, y, f) {
+        var within = false;
+        var xWithin = false;
+        var yWithin = false;
+        
+        // distance formula
+        var dx = (x - (f.targetX - f.width/2)) * (x - (f.targetX - f.width/2));
+        var dy = (y - (f.targetY - f.height/2)) * (y - (f.targetY - f.height/2));
+        var dist = Math.sqrt(dx + dy);
+        
+        if (dist < 3) {
+            within = true;
+        }
+        
+        return within;
     },
     
-    // UI & screens
+    // draw screen: intro
     drawUI: function(ctx) {
         // intro
         if (this.expState == this.EXP_STATE.BEGIN) {
@@ -347,6 +442,8 @@ app.main = {
     
     // mouse events
     doMouseDown: function(e) {
+        var mouse = getMouse(e);
+        
         // play audio
         this.sound.playBGAudio();
         
@@ -366,7 +463,11 @@ app.main = {
             return;
         }
         
-        var mouse = getMouse(e);
+        // follower
+        this.follower.targetX = mouse.x;
+        this.follower.targetY = mouse.y;
+
+        this.follower.isFollowing = true;
     },
     
 };

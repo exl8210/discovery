@@ -97,18 +97,37 @@ app.scene = (function(){
                     
                     ctx.beginPath();
                     ctx.moveTo(0, third*2);
-                    /*
-                    ctx.quadraticCurveTo(200, third-30, 400, third);
-                    ctx.quadraticCurveTo(600, third+30, 800, third);
-                    ctx.quadraticCurveTo(1000, third-30, 1200, third);
-                    ctx.quadraticCurveTo(1400, third+30, 1600, third);
-                    */
+                    
                     for (var i = 1; i <= intervalNum+1; i += 2) {
                         ctx.quadraticCurveTo((i*intervalSize)-intervalSize/2, third*2-30, i*intervalSize, third*2);
                         
                         ctx.quadraticCurveTo(((i+1)*intervalSize)-intervalSize/2, third*2+30, (i+1)*intervalSize, third*2);
                     }
                     ctx.quadraticCurveTo(this.width+intervalSize, third*2, this.width+intervalSize, this.height);
+                    ctx.quadraticCurveTo(this.width/2, this.height, 0, this.height);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    ctx.restore();
+                    
+                    // seabed
+                    var seabedLoc = this.height - 30;
+                    ctx.fillStyle = "#dec596";
+                    
+                    ctx.save();
+                    
+                    intervalSize = 400;
+                    ctx.translate(-3*intervalSize/4, 0);
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(0, seabedLoc);
+                    
+                    for (var i = 1; i <= intervalNum+1; i += 2) {
+                        ctx.quadraticCurveTo((i*intervalSize)-intervalSize/2, seabedLoc-10, i*intervalSize, seabedLoc);
+                        
+                        ctx.quadraticCurveTo(((i+1)*intervalSize)-intervalSize/2, seabedLoc+10, (i+1)*intervalSize, seabedLoc);
+                    }
+                    ctx.quadraticCurveTo(this.width+intervalSize, seabedLoc, this.width+intervalSize, this.height);
                     ctx.quadraticCurveTo(this.width/2, this.height, 0, this.height);
                     ctx.closePath();
                     ctx.fill();

@@ -73,18 +73,19 @@ window.addEventListener("keyup",function(e){
 		}
 	}
     
-    if (moveLeft) {
+    
+    if (e.keyCode == controls.KEYBOARD.KEY_SHIFT) {
+        quick = false;
+        app.main.isMovingQuickly = false;
+    }
+    
+    if (e.keyCode == controls.KEYBOARD.KEY_LEFT) {
         moveLeft = false;
         app.main.isMovingLeft = false;
     }
     
-    if (moveRight) {
+    if (e.keyCode == controls.KEYBOARD.KEY_RIGHT) {
         moveRight = false;
         app.main.isMovingRight = false;
-    }
-    
-    if (quick) {
-        quick = false;
-        app.main.isMovingQuickly = false;
     }
 });
