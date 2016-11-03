@@ -21,9 +21,17 @@ var app = app || {};
             alien.update();
             alien.render();
             console.log("alien says (@*#");
+
+            /*
+            //if state is paused
+            if(app.main.paused == true){
+                alien.pause();
+            }
+            */
+
         }
         
-        /*
+        
         //when in underwater gamestate
         if(app.main.expState == app.main.EXP_STATE.UNDERWATER){
             fish.update();
@@ -37,11 +45,12 @@ var app = app || {};
             fire.render();
             console.log("fire says crackle");
         }
-        */
+       
         
         //console.log("hello sprite");
     }
     
+    //define the sprite object
     function sprite(options){
         var that = {},
             frameIndex = 0,
@@ -50,9 +59,11 @@ var app = app || {};
             numberOfFrames = options.numberOfFrames || 1;
         
         that.context = options.context;
-        that.width = options.width;
-        that.height = options.height;
+        that.sheetWidth = options.sheetWidth;
+        that.sheetHeight = options.sheetHeight;
         that.image = options.image;
+        that.xPos = options.xPos;
+        that.yPos = options.yPos;
         
         //update the frames
         that.update = function(){
@@ -75,18 +86,26 @@ var app = app || {};
         //draw the frames
         that.render = function(){
             //clear the canvas
-            that.context.clearRect(0,0, that.width, that.height);
+            that.context.clearRect(0,0, canvas.width, canvas.height);
             
             //draw the animation
-            that.context.drawImage(that.image, frameIndex * that.width / numberOfFrames, 0, that.width / numberOfFrames, that.height, 0, 0, that.width/numberOfFrames, that.height);
+            
+            that.context.drawImage(that.image, frameIndex * that.sheetWidth / numberOfFrames, 0, that.sheetWidth / numberOfFrames, that.sheetHeight, that.xPos, that.yPos, that.sheetWidth/numberOfFrames, that.sheetHeight);
         };
         
+        /*
         //pause frames
         that.pause = function(){
+            //stop animation
+            window.cancelAnimationFrame(gameLoop);
+            
             tickCount = 0;
             ticksPerFrame = 0;
             frameIndex = 0;
+            
+            //console.log("paused");  
         }
+        */
         
         return that;
         
@@ -94,8 +113,8 @@ var app = app || {};
 
     //get the canvas
     canvas = document.getElementById("spriteCanvas");
-    canvas.width = 300;
-    canvas.height = 123;
+    canvas.width = 1280;
+    canvas.height = 460;
     
     //create the sprite sheets
     alienImg = new Image();
@@ -105,28 +124,46 @@ var app = app || {};
     //create alien sprites
     alien = sprite({
         context: canvas.getContext("2d"),
-        width: 499,
-        height: 123,
+        sheetWidth: 499,
+        sheetHeight: 123,
+        image: alienImg,
+        xPos: canvas.width/2,
+        yPos: canvas.height/2,
+        numberOfFrames: 3,
+        ticksPerFrame: 7
+    });
+    
+
+    //create fish sprites
+    fish = sprite({
+        context: canvas.getContext("2d"),
+        sheetWidth: 499,
+        sheetHeight: 123,
+        xPos: canvas.width/2,
+        yPos: canvas.height/2,
         image: alienImg,
         numberOfFrames: 3,
         ticksPerFrame: 7
     });
     
-    /*
-    //create fish sprites
-    fish = sprite({
-    });
-    
     //create fire sprites
     fire = sprite({
+        context: canvas.getContext("2d"),
+        sheetWidth: 499,
+        sheetHeight: 123,
+        image: alienImg,
+        xPos: canvas.width/2,
+        yPos: canvas.height/2,
+        numberOfFrames: 3,
+        ticksPerFrame: 7
     });
-    */
+
     
     //load alien sprite sheet
     alienImg.addEventListener("load", gameLoop);
     alienImg.src="images/alienSprite.png";
     
-    /*
+
     //load fish sprite sheet
     fishImg.addEventListener("load", gameLoop);
     fishImg.src="";
@@ -134,6 +171,13 @@ var app = app || {};
     //load fire sprite sheet
     fireImg.addEventListener("load", gameLoop);
     fireImg.src="";
-    */
 
+
+    return {
+        //return objects
+        alien: alien,
+        fish: fish,
+        fire: fire,
+    };
+    
 } ());
