@@ -6,6 +6,8 @@
     border: 0;
     box-sizing: border-box;
     text-decoration: none;
+    font-family: "helvetica";
+    font-weight: 100;
 }
 
 
@@ -14,13 +16,110 @@ body {
     background-color: #fafafa;
 }
 
+/* Slide-out Nav */
+.nav{
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 3;
+    margin-top: 0;
+    margin-left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.75s;
+    padding-top:40px;
+    padding-left: 30px;
+    visibility: hidden;
+}
+
+h1 {
+    font-family: "helvetica";
+    font-weight: 100;
+    padding-left: 30px;
+    padding-top:20px;
+    font-size: 40px;
+    color: black;
+    display: block;
+    transition: 0.3s;
+    align-content: center;
+}
+
+h2{
+    font-size: 30px; 
+    padding-left: 30px;
+    padding-top:20px;
+    display: block;
+    color: darkgrey;
+}
+
+p{
+    font-size: 18px;
+    padding-left: 30px;
+    display: block;
+    color: darkgrey;
+}
+
+#subtitle {
+    font-size: 12px;
+    padding-left: 30px;
+    display: block;
+    color: darkgrey;
+}
+
+#buttons{
+    font-family: "helvetica";
+    font-weight: 100;
+    text-decoration: none;
+    padding-left: 30px;
+    padding-top:30px;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    align-content: center;
+}
+
+#buttons input[type="radio"]:checked{
+    color: cadetblue;
+}
+
+li{
+   list-style-type: none;
+}
+
+li:hover{
+    color: #00b3b3;
+}
+
+
+
+.radio{
+    padding-top: 20px;
+}
+
+
+.nav .close{
+    position:absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    color: black;
+}
+
+.close:hover {
+    color: #00b3b3;
+}
+
+.close:active {
+    color: cadetblue;
+}
+
+#about {
+    margin-top: 50%;
+}
 
 /* Components */
-
-img#hamIcon{
-    margin-top: 20px;
-    margin-left:20px;
-}
 
 canvas#uiCanvas {
     background-color: rgba(255, 255, 255, 0);
