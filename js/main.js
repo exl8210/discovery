@@ -59,6 +59,17 @@ app.main = {
         screenView: undefined,
         worldRect: undefined,
         
+        // directions
+        speed: 5,
+        quickSpeed: false,
+        quickMultiplier: 2,
+        DIRECTION: Object.freeze({
+            STATIC: 0,
+            LEFT: 1,
+            RIGHT: 2
+        }),
+        direction: undefined,
+        
         // functions
         update: function(step) {
             // update screenView
@@ -154,37 +165,42 @@ app.main = {
     
     /*
     // scene scrolling
-    speed: 50,
+    speed: 5,
     quickSpeed: false,
     DIRECTION: Object.freeze({
         STATIC: 0,
         LEFT: 1,
         RIGHT: 2
     }),
+    direction: this.DIRECTION.STATIC,
     */
+    
 
     // --- Methods
     // initialise main
     init: function() {
-        console.log("main.js init called");
+        console.log("main-2.js init called");
         
 		// --- initialise scroll canvas properties
 		this.canvas = document.querySelector('#scrollCanvas');
 		this.canvas.width = this.WIDTH;
 		this.canvas.height = this.HEIGHT;
-        console.log(this.canvas.width + ", " + this.canvas.height);
+        //console.log(this.canvas.width + ", " + this.canvas.height);
 		this.ctx = this.canvas.getContext('2d');
         
 		// --- initialise ui canvas properties
 		this.interface = document.querySelector('#uiCanvas');
 		this.interface.width = 680;
 		this.interface.height = this.HEIGHT;
-        console.log(this.interface.width + ", " + this.interface.height);
+        //console.log(this.interface.width + ", " + this.interface.height);
 		this.intCtx = this.interface.getContext('2d');
         
         // --- initialise experience
         this.expState = this.EXP_STATE.BEGIN;
         //this.expState = this.EXP_STATE.SPACE;
+        
+        // hook up events
+        this.interface.onmousedown = this.canvas.onmousedown = this.doMouseDown.bind(this);
         
         // --- initialise audio
         this.bgAudio = document.querySelector("#bgAudio");
@@ -199,6 +215,12 @@ app.main = {
         // generate large image texture
         this.room.map.generate();
         
+        // set up camera
+        //this.camera = this.scene.Camera(0, 0, this.canvas.width, this.canvas.height, this.room.width, this.room.height);
+        
+        // direction
+        this.camera.direction = this.camera.DIRECTION.STATIC;
+        
         // viewport rectangle
         this.camera.screenView = new this.scene.Viewport(this.camera.xView, this.camera.yView, this.camera.wView, this.camera.hView);
         
@@ -207,19 +229,7 @@ app.main = {
         
         console.dir(this.camera);
         
-        //this.scene.sceneTest();
-        
-        // -- UI ---
-        this.hamIcon = document.querySelector("#hamIcon");
-        this.hamIcon.onclick = function(e){
-            
-            this.ctx.save();
-            this.ctx.fillStyle = "white";
-            this.ctx.fillRect(0,0,200,this.HEIGHT);
-            this.ctx.fillText(this.ctx, "menu", 20, 50, "20pt verdana", "black");
-            
-            console.log("menu open");
-        }
+        this.scene.sceneTest();
         
         
         //-------SOUND----------
@@ -232,7 +242,7 @@ app.main = {
     
     // animation loop
     update: function() {
-        console.log("update loop called");
+        //console.log("update loop called");
         
         // schedule call to update()
         this.animationID = requestAnimationFrame(this.update.bind(this));
@@ -245,18 +255,22 @@ app.main = {
         
         // check for time passed
         var dt = this.calculateDeltaTime();
-
+        
+        // update camera
+        //this.camera.update(dt);
+        
         // draw scene
-        console.log("drawing scene");
+        //console.log("drawing scene");
         this.drawScene(this.ctx);
+        this.drawUI(this.ctx);
         
         /*
-        this.test();
-        console.log("testing: bg");
+        //this.test();
+        //console.log("testing: bg");
 		this.ctx.fillStyle = "black"; 
 		this.ctx.fillRect(0,0,this.WIDTH,this.HEIGHT); 
         
-        console.log("testing: circle");
+        //console.log("testing: circle");
         this.ctx.save();
         this.ctx.beginPath();
         this.ctx.arc(200, 200, 50, 0, Math.PI*2, false);
@@ -277,7 +291,30 @@ app.main = {
         this.STEP = 1/fps;
 		return 1/fps;
 	},
-    
+    /*
+    // canvas scrolling/panning
+    sceneScroll: function() {
+        if(this.direction == this.DIRECTION.LEFT)
+            this.camera.xView -= this.speed * this.step;
+        if(this.direction == this.DIRECTION.RIGHT)
+            this.camera.xView += this.speed * this.step;
+
+        this.camera.screenView.set(this.camera.xView, this.camera.yView);
+
+        // don't let camera leaves the world's boundary
+        if(!this.camera.screenView.within(this.worldRect))
+        {
+            if(this.camera.screenView.left < this.camera.worldRect.left)
+                this.camera.xView = this.camera.worldRect.left;
+            if(this.camera.screenView.top < this.camera.worldRect.top)
+                this.camera.yView = this.camera.worldRect.top;
+            if(this.camera.screenView.right > this.camera.worldRect.right)
+                this.camera.xView = this.camera.worldRect.right - this.camera.wView;
+            if(this.camera.screenView.bottom > this.camera.worldRect.bottom)					
+                this.camera.yView = this.camera.worldRect.bottom - this.camera.hView;
+        }
+    },
+    */
     // play/pause
     pause: function() {
         // set boolean to true
@@ -312,20 +349,45 @@ app.main = {
         // clear the entire canvas
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // redraw all objects
-        this.room.map.draw(ctx, this.camera.xView, this.camera.yView);	
+        if (this.expState != this.EXP_STATE.BEGIN) {
+            if (this.expState == this.EXP_STATE.SPACE) {
+                
+            }
+            
+            // redraw all objects
+            this.room.map.draw(ctx, this.camera.xView, this.camera.yView);	
+        }
         
     },
     
-    drawPauseScreen: function(ctx){
-        ctx.save();
-        ctx.fillStyle = "white";
-        ctx.fillRect(0,0,this.width, this.height);
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        this.fillText(this.ctx, "paused.", this.width/2, this.height/2, "40pt verdana", "black");
-        ctx.restore(); 
+    changeDirection: function(dir) {
+        if (this.dir == "r") {
+            console.log("move right");
+            this.camera.direction = 2;
+        }
+
+        if (this.dir == "l") {
+            console.log("move left");
+            this.camera.direction = 1;
+        }
     },
+
+    toggleQuick: function() {
+        if (this.camera.quickSpeed == false) {
+            this.camera.quickSpeed = true;
+        }
+        else {
+            this.camera.quickSpeed == false;
+        }
+
+        this.goQuickly();
+    },
+
+    goQuickly: function() {
+        console.log("quack");
+        this.camera.speed *= this.camera.quickMultiplier;
+    },
+
     
     // === TESSSSTTTTTT
     test: function() {
@@ -338,12 +400,33 @@ app.main = {
         this.ctx.restore();
     },
     
-    // UI 
+    // UI & screens
     drawUI: function(ctx) {
-        //menu
-
-        
-
+        // intro
+        if (this.expState == this.EXP_STATE.BEGIN) {
+            ctx.save();
+            ctx.fillStyle = "pink";
+            ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            
+            ctx.fillText(this.ctx, "D I S C O V E R Y", 200, 200, "32pt helvetica", "#FFFFFF");
+            ctx.fillText(this.ctx, "Click anywhere to start!", this.canvas.width/2, this.canvas.height/2 + 100, "16pt helvetica", "#232323");
+            ctx.restore();
+        }
+    },
+    
+    // pause
+    drawPauseScreen: function(ctx) {
+        ctx.save();
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, this.WIDTH, this.HEIGHT);
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(this.ctx, "paused", this.WIDTH/2, this.HEIGHT/2, "40pt helvetica", "white");
+        ctx.fillStyle = "white";
+        ctx.restore();
     },
     
     // audio
@@ -377,8 +460,8 @@ app.main = {
         };
         
         // title screen
-        if (this.gameState == this.GAME_STATE.BEGIN) {
-            this.gameState = this.GAME_STATE.DEFAULT;
+        if (this.expState == this.EXP_STATE.BEGIN) {
+            this.expState = this.EXP_STATE.SPACE;
             
             return;
         }
