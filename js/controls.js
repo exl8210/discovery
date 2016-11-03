@@ -73,30 +73,6 @@ window.addEventListener("keyup",function(e){
 		}
 	}
     
-    /*
-    // moving left and right
-    if (char == "'") {
-        // scroll to the right
-
-        console.log("move right");
-        app.main.changeDirection("r");
-    }
-    
-    if (char == "%") {
-        // scroll to the left
-        
-        console.log("move left");
-        app.main.changeDirection("l");
-    }
-    
-    // moving quicker
-    if (char == "KEY_SHIFT") {
-        // turn on 'speedy' variable
-        
-        app.scene.toggleQuick();
-    }
-    */
-    
     if (moveLeft) {
         moveLeft = false;
         app.main.isMovingLeft = false;

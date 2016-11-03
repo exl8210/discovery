@@ -260,6 +260,7 @@ app.main = {
         var cam = this.camera;
         
         if (this.expState != this.EXP_STATE.BEGIN) {
+            // if shift is pressed, the speed increases
             if (this.isMovingQuickly) {
                 this.speed = this.QUICK_SPEED;
             }
@@ -267,17 +268,27 @@ app.main = {
                 this.speed = this.INIT_SPEED;
             }
             
+            // move to the right
             if (this.isMovingRight) {
+                // stay within the boundaries
                 if (cam.xView < (this.room.map.width - this.WIDTH)) {
                     cam.xView += this.speed;
                     console.log(this.camera.xView);
                 }
+                else {
+                    cam.xView = this.room.map.width - this.WIDTH;
+                }
             }
             
+            // move to the left
             if (this.isMovingLeft) {
+                // stay within the boundaries
                 if (cam.xView > 0) {
                     cam.xView -= this.speed;
                     console.log(this.camera.xView);
+                }
+                else {
+                    cam.xView = 0;
                 }
             }
         }

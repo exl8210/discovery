@@ -16,42 +16,6 @@ app.scene = (function(){
         RIGHT: 2
     });
     var direction = undefined;
-    /*
-    // camera
-    var camera = {
-        // camera position
-        xView: 0,
-        yView: 0,
-        
-        // rect representing the viewport
-        screenView: undefined,
-        worldRect: undefined,
-        
-        // functions
-        update: function(step) {
-            // update screenView
-            if(direction == DIRECTION.LEFT)
-                this.xView -= this.speed * step;
-            if(direction == DIRECTION.RIGHT)
-                this.xView += this.speed * step;
-
-            this.screenView.set(this.xView, this.yView);
-
-            // don't let camera leaves the world's boundary
-            if(!this.screenView.within(this.worldRect))
-            {
-                if(this.screenView.left < this.worldRect.left)
-                    this.xView = this.worldRect.left;
-                if(this.screenView.top < this.worldRect.top)					
-                    this.yView = this.worldRect.top;
-                if(this.screenView.right > this.worldRect.right)
-                    this.xView = this.worldRect.right - this.wView;
-                if(this.screenView.bottom > this.worldRect.bottom)					
-                    this.yView = this.worldRect.bottom - this.hView;
-            }
-        }
-    };
-*/
     
     // === Map
     var map = {
@@ -165,98 +129,15 @@ app.scene = (function(){
                 r.top < this.bottom);
     }
     
-    // === Camera
-    /*
-    function Camera(xView, yView, canvasWidth, canvasHeight, worldWidth, worldHeight)
-    {
-        
-        console.log("hello camera");
-        
-        // position of camera (left-top coordinate)
-        this.xView = xView || 0;
-        this.yView = yView || 0;
-
-        // viewport dimensions
-        this.wView = canvasWidth;
-        this.hView = canvasHeight;	
-
-        // rectangle that represents the viewport
-        this.screenView = new this.Viewport(this.xView, this.yView, this.wView, this.hView);				
-
-        // rectangle that represents the world's boundary (room's boundary)
-        this.worldRect = new this.Viewport(0, 0, worldWidth, worldHeight);
-        
-    }
-    */
-    /*
-    Camera.prototype.update = function(step)
-    {
-        // update screenView
-        if(Game.controls.left)
-            this.xView -= this.speed * step;
-        if(Game.controls.right)
-            this.xView += this.speed * step;
-
-        this.screenView.set(this.xView, this.yView);
-
-        // don't let camera leaves the world's boundary
-        if(!this.screenView.within(this.worldRect))
-        {
-            if(this.screenView.left < this.worldRect.left)
-                this.xView = this.worldRect.left;
-            if(this.screenView.top < this.worldRect.top)					
-                this.yView = this.worldRect.top;
-            if(this.screenView.right > this.worldRect.right)
-                this.xView = this.worldRect.right - this.wView;
-            if(this.screenView.bottom > this.worldRect.bottom)					
-                this.yView = this.worldRect.bottom - this.hView;
-        }
-
-    }	
-    
-    function changeDirection(dir) {
-        if (this.dir == "r") {
-            console.log("move right");
-            this.direction = 2;
-        }
-
-        if (this.dir == "l") {
-            console.log("move left");
-            this.direction = 1;
-        }
-    }
-
-    function toggleQuick() {
-        if (this.quickSpeed == false) {
-            this.quickSpeed = true;
-        }
-        else {
-            this.quickSpeed == false;
-        }
-
-        this.goQuickly();
-    }
-
-    function goQuickly() {
-        console.log("quack");
-        this.speed *= this.quickMultiplier;
-    }
-*/
-    
     // === test
     function sceneTest() {
         console.log("scene: function test");
     }
     
 	return {
-        //camera: camera,
         map: map,
         Viewport: Viewport,
-        //Camera: Camera,
-        //changeDirection: changeDirection,
-        //toggleQuick: toggleQuick,
-        //goQuickly: goQuickly,
-        sceneTest: sceneTest,
+        //sceneTest: sceneTest,
     };
     
 }());
