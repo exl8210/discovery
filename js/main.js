@@ -27,8 +27,8 @@ app.main = {
     expState: undefined,
     EXP_STATE: Object.freeze({
         BEGIN: 0,
-        HOME: 1,
-        SPACE: 2,
+        SPACE: 1,
+        HOME: 2,
         UNDERWATER: 3,
         INFO: 4
     }),
@@ -101,7 +101,7 @@ app.main = {
         this.room.map = this.scene.map;
         
         // generate large image texture --> the first one should be HOME
-        this.room.map.generate(this.EXP_STATE.UNDERWATER);
+        this.room.map.generate(this.EXP_STATE.SPACE);
         // *** EVERY TIME ANOTHER SCENE IS SELECTED, WE HAVE TO REGENERATE THE MAP ***
         // capture selection --> pass into generate using: 
         // this.room.map.generate(this.expState);
