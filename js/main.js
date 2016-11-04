@@ -133,13 +133,11 @@ app.main = {
         // world boundary rectangle
         this.camera.worldRect = new this.scene.Viewport(0, 0, this.room.width, this.room.height);
         
-        console.dir(this.camera);
+        //console.dir(this.camera);
         
         // follower
-        //this.follower.xPos = getRandom(0, this.canvas.width);
-        //this.follower.xPos = getRandom(0, this.canvas.height);
-        this.follower.xPos = 200;
-        this.follower.yPos = 200;
+        this.follower.xPos = getRandom(0, this.canvas.width);
+        this.follower.yPos = getRandom(0, this.canvas.height);
         this.follower.xSpeed = getRandom(-2.0, 2.0);
         this.follower.ySpeed = getRandom(-2.0, 2.0);
         
@@ -307,7 +305,7 @@ app.main = {
     },
     
     // follower moving to target (mouse click)
-    drawFollower: function(ctx) {
+    drawFollower: function(ctx) {        
         var f = this.follower;
         
         if (f.isFollowing) {
@@ -361,8 +359,6 @@ app.main = {
         
         ctx.fillStyle="white";
         ctx.fillRect(f.xPos, f.yPos, f.width, f.height);
-        
-        console.log("isFollowing = " + f.isFollowing);
     },
     
     // collision detection between follower and target

@@ -73,7 +73,6 @@ window.addEventListener("keyup",function(e){
 		}
 	}
     
-    
     if (e.keyCode == controls.KEYBOARD.KEY_SHIFT) {
         quick = false;
         app.main.isMovingQuickly = false;
