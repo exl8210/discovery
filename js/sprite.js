@@ -128,7 +128,7 @@ app.sprite = (function () {
     //create fire sprites
     fire = sprite({
         context: canvas.getContext("2d"),
-        sheetWidth: 499,
+        sheetWidth: 375,
         sheetHeight: 123,
         image: fireImg,
         xPos: canvas.width/2,
@@ -149,7 +149,7 @@ app.sprite = (function () {
     
     //load fire sprite sheet
     fireImg.addEventListener("load", gameLoop);
-    fireImg.src="";
+    fireImg.src="images/fireSprite.png";
 
 
     return {
