@@ -32,7 +32,7 @@ app.Emitter = function(){
     
     //public methods
     var p = Emitter.prototype;
-    console.log(p);
+   
     
     p.createParticles = function(emitterPoint){
         //initalize array
