@@ -21,14 +21,14 @@ app.main = {
     
     // experience states
     // 1. begin
-    // 2. home
+    // 2. campfire
     // 3. space
     // 4. underwater
     expState: undefined,
     EXP_STATE: Object.freeze({
         BEGIN: 0,
-        HOME: 1,
-        SPACE: 2,
+        SPACE: 1,
+        CAMPFIRE: 2,
         UNDERWATER: 3,
         INFO: 4
     }),
@@ -41,6 +41,7 @@ app.main = {
         width: 1280,
         height: 460,
         map: undefined,
+        offset: 0,  // used to check for object collision boundaries on scroll
     },
     STEP: undefined,
     
@@ -66,6 +67,23 @@ app.main = {
     isMovingRight: false,
     isMovingLeft: false,
     isMovingQuickly: false,
+    
+    // follower
+    follower: {
+        // object dimensions
+        width: 30,
+        height: 20,
+        
+        // position properties
+        xPos: undefined,
+        yPos: undefined,
+        xSpeed: undefined,
+        ySpeed: undefined,
+        step: 1,
+        isFollowing: false,
+        targetX: undefined,
+        targetY: undefined,
+    },
     
 
     // --- Methods
@@ -100,7 +118,7 @@ app.main = {
         // map
         this.room.map = this.scene.map;
         
-        // generate large image texture --> the first one should be HOME
+        // generate large image texture --> the first one should be CAMPFIRE
         this.room.map.generate(this.EXP_STATE.SPACE);
         // *** EVERY TIME ANOTHER SCENE IS SELECTED, WE HAVE TO REGENERATE THE MAP ***
         // capture selection --> pass into generate using: 
@@ -115,7 +133,13 @@ app.main = {
         // world boundary rectangle
         this.camera.worldRect = new this.scene.Viewport(0, 0, this.room.width, this.room.height);
         
-        console.dir(this.camera);
+        //console.dir(this.camera);
+        
+        // follower
+        //this.sprite.fish.xPos = getRandom(0, this.canvas.width);
+        //this.sprite.fish.yPos = getRandom(0, this.canvas.height);
+        this.sprite.fish.xSpeed = getRandom(-2.0, 2.0);
+        this.sprite.fish.ySpeed = getRandom(-2.0, 2.0);
         
         //-------SOUND----------
         // start with no audio
@@ -146,7 +170,7 @@ app.main = {
         var activeSprite;
         
         switch(this.expState) {
-            case this.EXP_STATE.HOME:
+            case this.EXP_STATE.CAMPFIRE:
                 activeSprite = sprite.fire;
                 break;
 
@@ -165,6 +189,7 @@ app.main = {
         var cam = this.camera;
         
         if (this.expState != this.EXP_STATE.BEGIN) {
+            // toggle between quick and regular speed
             if (this.isMovingQuickly) {
                 this.speed = this.QUICK_SPEED;
             }
@@ -172,29 +197,49 @@ app.main = {
                 this.speed = this.INIT_SPEED;
             }
             
+            // if right key is pressed...
             if (this.isMovingRight) {
                 // check for right boundary
                 if (cam.xView < (this.room.map.width - this.WIDTH)) {
+                    // move camera
                     cam.xView += this.speed;
-                    //console.log(this.camera.xView);
                     
+                    // change world offset
+                    this.room.offset++;
+                    
+                    // move sprits and objects
                     activeSprite.xPos -= this.speed;
+                    this.sprite.fish.xPos -= this.speed;
                 }
                 else {
+                    // reposition camera at edge
                     cam.xView = this.room.map.width - this.WIDTH;
+                    
+                    // make sure offset is an appropriate amount
+                    this.room.offset = this.room.map.width - this.sprite.fish.sheetWidth/4;
                 }
             }
             
+            // if left key is pressed...
             if (this.isMovingLeft) {
                 // check for left boundary
                 if (cam.xView > 0) {
+                    // move camera
                     cam.xView -= this.speed;
-                    //console.log(this.camera.xView);
                     
+                    // change world offset
+                    this.room.offset--;
+                    
+                    // move sprits and objects
                     activeSprite.xPos += this.speed;
+                    this.sprite.fish.xPos += this.speed;
                 }
                 else {
+                    // reposition camera at edge
                     cam.xView = 0;
+                    
+                    // make sure offset is an appropriate amount
+                    this.room.offset = 0;
                 }
             }
         }
@@ -250,45 +295,95 @@ app.main = {
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.topCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+        // refresh map
         if (this.expState != this.EXP_STATE.BEGIN) {
-            // redraw all objects
             this.room.map.draw(ctx, this.camera.xView, this.camera.yView);	
         }
         
+        // draw follower
+        this.drawFollower(ctx);
     },
     
-    moveLeft: function() {
-        var cam = this.camera;
-        console.log("move left");
+    // follower moving to target (mouse click)
+    drawFollower: function(ctx) {        
+        var f = this.sprite.fish;
+        var fWidth = f.sheetWidth/4;
+        var fHeight = f.sheetHeight;
         
-        cam.xView -= this.speed;
-        cam.screenView.set(cam.xView, cam.yView);
+        if (f.isFollowing) {
+            if (f.xPos < f.targetX - fWidth/2) {  // according to obj's centre
+                f.xPos += Math.abs(f.xSpeed);
+            }
+            else if (f.xPos > f.targetX - fWidth/2) {
+                f.xPos -= Math.abs(f.xSpeed);
+            }
+            
+            if (f.yPos < f.targetY - fHeight/2) {
+                f.yPos += Math.abs(f.ySpeed);
+            }
+            else if (f.yPos > f.targetY - fHeight/2) {
+                f.yPos -= Math.abs(f.ySpeed);
+            }
+            
+            if(this.isWithin(f.xPos, f.yPos, f)) {
+                f.isFollowing = false;
+                
+                f.xSpeed *= -1;
+                f.ySpeed *= -1;
+            }
+        }
+        else {
+            // move object
+            f.xPos += f.xSpeed;
+            f.yPos += f.ySpeed;
+            
+            // collision detection (relative to map)
+            if (f.xPos <= 0 - this.room.offset) {
+                f.xPos = 0;
+                f.xSpeed *= -1;
+            }
+            
+            if (f.xPos >= this.room.map.width - this.sprite.spriteCanvas.width - fWidth) {
+                f.xPos = this.room.map.width - this.sprite.spriteCanvas.width - fWidth;
+                f.xSpeed *= -1;
+            }
+            
+            if (f.yPos <= 0) {
+                f.yPos = 0;
+                f.ySpeed *= -1;
+            }
+            
+            if (f.yPos >= this.room.map.height - fHeight) {
+                f.yPos = this.room.map.height - fHeight;
+                f.ySpeed *= -1;
+            }
+        }
         
-        
-    },
-
-    moveRight: function() {
-        var cam = this.camera;
-        console.log("move right");
-
-        cam.xView += this.speed;
-        cam.screenView.set(cam.xView, cam.yView);
-        
-        console.log(this.speed, cam.xView);
+        //ctx.fillStyle="white";
+        //ctx.fillRect(f.xPos, f.yPos, fWidth, fHeight);
     },
     
-    // === TESSSSTTTTTT
-    test: function() {
-        this.ctx.save();
-        this.ctx.beginPath();
-        this.ctx.arc(this.canvas.width/2, this.canvas.height/2, 50, 0, Math.PI*2, false);
-        this.ctx.closePath(0);
-        this.ctx.fillStyle = "red";
-        this.ctx.fill();
-        this.ctx.restore();
+    // collision detection between follower and target
+    isWithin: function(x, y, f) {
+        var within = false;
+        var xWithin = false;
+        var yWithin = false;
+        var fWidth = f.sheetWidth/4;
+        var fHeight = f.sheetHeight;
+        
+        // distance formula
+        var dx = (x - (f.targetX - fWidth/2)) * (x - (f.targetX - fWidth/2));
+        var dy = (y - (f.targetY - fHeight/2)) * (y - (f.targetY - fHeight/2));
+        var dist = Math.sqrt(dx + dy);
+        
+        if (dist < 3) {
+            within = true;
+        }
+        
+        return within;
     },
     
-    // UI & screens
+    // draw screen: intro
     drawUI: function(ctx) {
         // intro
         if (this.expState == this.EXP_STATE.BEGIN) {
@@ -328,14 +423,14 @@ app.main = {
         this.topCtx.fillText("COME BACK SOON? :(", this.WIDTH/2, this.HEIGHT/2 + 30);
         this.topCtx.restore();
     },
-    
+    	
     // audio
     stopBGAudio: function() {
         this.sound.stopBGAudio();
     },
     
     playEffect: function() {
-        this.effectAudio.src = "assets/sounds/" + this.effectSounds[this.currentEffect];
+        this.effectAudio.src = "sounds/" + this.effectSounds[this.currentEffect];
         this.effectAudio.play();
         
         this.currentEffect += this.currentDirection;
@@ -347,8 +442,7 @@ app.main = {
     
     // mouse events
     doMouseDown: function(e) {
-        // play audio
-        this.sound.playBGAudio();
+        var mouse = getMouse(e);
         
         // unpause on a click
         // just to make sure we never get stuck in a paused state
@@ -362,11 +456,16 @@ app.main = {
         // title screen
         if (this.expState == this.EXP_STATE.BEGIN) {
             this.expState = this.EXP_STATE.SPACE;
+            this.sound.playBGAudio();
             
             return;
         }
         
-        var mouse = getMouse(e);
+        // follower
+        this.sprite.fish.targetX = mouse.x;
+        this.sprite.fish.targetY = mouse.y;
+
+        this.sprite.fish.isFollowing = true;
     },
     
 };

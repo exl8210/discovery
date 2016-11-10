@@ -86,11 +86,21 @@ app.sprite = (function () {
             that.context.drawImage(that.image, frameIndex * that.sheetWidth / numberOfFrames, 0, that.sheetWidth / numberOfFrames, that.sheetHeight, that.xPos, that.yPos, that.sheetWidth/numberOfFrames, that.sheetHeight);
         };
         
+        // flip sprite
+        that.flip = function() {
+            
+        };
+        
         return that;
         
     }
+<<<<<<< Updated upstream
 
     //get the Sprite canvas
+=======
+    
+    //get the canvas
+>>>>>>> Stashed changes
     canvas = document.getElementById("spriteCanvas");
     canvas.width = 1280;
     canvas.height = 460;
@@ -118,11 +128,16 @@ app.sprite = (function () {
         context: canvas.getContext("2d"),
         sheetWidth: 499,
         sheetHeight: 123,
-        xPos: canvas.width/2,
-        yPos: canvas.height/2,
         image: fishImg,
         numberOfFrames: 4,
-        ticksPerFrame: 15
+        ticksPerFrame: 15,
+        xPos: canvas.width/2,
+        yPos: canvas.height/2,
+        xSpeed: undefined,
+        ySpeed: undefined,
+        isFollowing: false,
+        targetX: undefined,
+        targetY: undefined,
     });
 
     //create fire sprites
@@ -154,6 +169,7 @@ app.sprite = (function () {
 
     return {
         //return objects to move/place later
+        spriteCanvas: canvas,
         alien: alien,
         fish: fish,
         fire: fire,
