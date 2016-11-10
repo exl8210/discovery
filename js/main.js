@@ -85,7 +85,6 @@ app.main = {
         targetY: undefined,
     },
     
-    
     Emitter: undefined,
     exhaust: undefined,
     emitterX: undefined,
@@ -222,12 +221,8 @@ app.main = {
                     
                     // move sprites and objects
                     activeSprite.xPos -= this.speed;
-<<<<<<< HEAD
                     this.sprite.fish.xPos -= this.speed;
-=======
                     this.exhaust.emitter -= this.speed;
-                    this.follower.xPos -= this.speed;
->>>>>>> origin/master
                 }
                 else {
                     // reposition camera at edge
@@ -250,12 +245,8 @@ app.main = {
                     
                     // move sprites and objects
                     activeSprite.xPos += this.speed;
-<<<<<<< HEAD
                     this.sprite.fish.xPos += this.speed;
-=======
                     this.p.x += this.speed;
-                    this.follower.xPos += this.speed;
->>>>>>> origin/master
                 }
                 else {
                     // reposition camera at edge
