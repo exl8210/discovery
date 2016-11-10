@@ -1,13 +1,18 @@
 //emitter.js
 
 "use strict";
+
+
+// --- Create app
+// if app exists use the existing copy
+// else create a new empty object literal
 var app = app || {};
 
 app.Emitter = function(){
     
     function Emitter(){
         //public
-        this.numParticples = 25;
+        this.numParticles = 25;
         this.useCircles = true;
         this.useSquares = false;
         this.xRange = 4;
@@ -16,7 +21,7 @@ app.Emitter = function(){
         this.minYspeed = 2;
         this.maxXspeed = 1;
         this.maxYspeed = 4;
-        this.startRadius = 4;
+        this.startRadius = 1;
         this.expansionRate = 0.3;
         this.decayRate = 2.5;
         this.lifetime = 100;

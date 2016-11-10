@@ -85,6 +85,10 @@ app.main = {
         targetY: undefined,
     },
     
+    
+    Emitter: undefined,
+    exhaust: undefined,
+    
 
     // --- Methods
     // initialise main
@@ -140,6 +144,12 @@ app.main = {
         this.follower.yPos = getRandom(0, this.canvas.height);
         this.follower.xSpeed = getRandom(-2.0, 2.0);
         this.follower.ySpeed = getRandom(-2.0, 2.0);
+    
+        //Emitter
+        this.exhaust = new this.Emitter();
+        this.exhaust.numParticles = 100;
+        this.exhaust.createParticles({x:100, y:100});
+    
         
         //-------SOUND----------
         // start with no audio
@@ -402,6 +412,14 @@ app.main = {
             ctx.fillText("click anywhere to start exploring!", this.canvas.width/2, this.canvas.height/2 + 30);
             ctx.restore();
         }
+        
+        
+        if (this.expState == this.EXP_STATE.CAMPFIRE) {
+            //if on campfire state, display "smoke"
+            this.exhaust.updateAndDraw(this.ctx, {x:100, y:100});
+        
+        }
+        
     },
     
     // pause

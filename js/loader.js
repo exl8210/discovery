@@ -26,8 +26,13 @@ window.onload = function(){
     //hook up sprites
     app.main.sprite = app.sprite;
     
+    //hook up emitter
+    app.main.Emitter = app.Emitter;
+    
     // load main app
 	app.main.init();
+    
+
 }
 
 // --- Pausing/unpausing
