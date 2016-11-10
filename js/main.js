@@ -459,7 +459,6 @@ app.main = {
         this.sound.stopEffect();
     },
     
-    
     // mouse events
     doMouseDown: function(e) {
         var mouse = getMouse(e);

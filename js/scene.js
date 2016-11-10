@@ -55,12 +55,31 @@ app.scene = (function(){
                         ctx.fill();
                     }
                     
+                    var earth = new Image();
+                    earth.src = "images/earth.png";
+                    ctx.drawImage(earth, getRandom(0, this.width/5-100), 100);
+                    
+                    var jupiter = new Image();
+                    jupiter.src = "images/jupiter.png";
+                    ctx.drawImage(jupiter, getRandom(this.width/5-190, 2*(this.width/5)-190), 100);
+                    
+                    var moon = new Image();
+                    moon.src = "images/moon.png";
+                    ctx.drawImage(moon, getRandom(2*(this.width/5)-60, 3*(this.width)-60), 100);
+                    
+                    var potato = new Image();
+                    potato.src = "images/potato.png";
+                    ctx.drawImage(potato, getRandom(3*(this.width/5)-100, 4*(this.width)-100), 100);
+                    
+                    var saturn = new Image();
+                    saturn.src = "images/saturn.png";
+                    ctx.drawImage(saturn, getRandom(4*(this.width/5)-115, 5*(this.width)-115), 100);
+                    
                     break;
                     
                 case app.main.EXP_STATE.UNDERWATER:
                     var intervalSize = 300;
                     var intervalNum = this.width/intervalSize;
-                    console.log(intervalNum);
                     var third = this.height/3;
                     
                     ctx.fillStyle = "#6aeaef";		    
