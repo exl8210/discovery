@@ -90,7 +90,7 @@ app.sprite = (function () {
         
     }
 
-    //get the canvas
+    //get the Sprite canvas
     canvas = document.getElementById("spriteCanvas");
     canvas.width = 1280;
     canvas.height = 460;
@@ -124,7 +124,7 @@ app.sprite = (function () {
         numberOfFrames: 4,
         ticksPerFrame: 15
     });
-    
+
     //create fire sprites
     fire = sprite({
         context: canvas.getContext("2d"),

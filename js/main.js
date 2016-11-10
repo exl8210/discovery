@@ -110,7 +110,7 @@ app.main = {
         
         // --- initialise audio
         this.bgAudio = document.querySelector("#bgAudio");
-        this.bgAudio.volume = 0.25;
+        this.bgAudio.volume = 0.2;
         this.effectAudio = document.querySelector("#effectAudio");
         this.effectAudio.volume = 0.3;
         
@@ -144,6 +144,7 @@ app.main = {
         //-------SOUND----------
         // start with no audio
         this.sound.stopBGAudio();
+        this.sound.stopEffect();
         
 		// start the animation loop
 		this.update();
@@ -273,6 +274,7 @@ app.main = {
         
         // stop audio
         this.stopBGAudio();
+        this.stopEffectAudio();
     },
     
     resume: function() {
@@ -287,6 +289,7 @@ app.main = {
         
         // play audio
         this.sound.playBGAudio();
+        this.sound.playEffect();
     },
     
     // set up scene
@@ -425,16 +428,10 @@ app.main = {
         this.sound.stopBGAudio();
     },
     
-    playEffect: function() {
-        this.effectAudio.src = "sounds/" + this.effectSounds[this.currentEffect];
-        this.effectAudio.play();
-        
-        this.currentEffect += this.currentDirection;
-        if (this.currentEffect == this.effectSounds.length || this.currentEffect == -1) {
-            this.currentDirection *= -1;
-            this.currentEffect += this.currentDirection;
-        }
+    stopEffectAudio: function(){
+        this.sound.stopEffect();
     },
+    
     
     // mouse events
     doMouseDown: function(e) {
@@ -453,6 +450,7 @@ app.main = {
         if (this.expState == this.EXP_STATE.BEGIN) {
             this.expState = this.EXP_STATE.SPACE;
             this.sound.playBGAudio();
+            this.sound.playEffect();
             
             return;
         }

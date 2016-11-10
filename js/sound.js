@@ -16,15 +16,14 @@ app.sound = (function(){
     
     // effect audio
 	var effectAudio = undefined;
-	var currentEffect = 0;
-	var currentDirection = 1;
-	var effectSounds = ["1.mp3","2.mp3","3.mp3","4.mp3","5.mp3","6.mp3","7.mp3","8.mp3"];
-	
+	var effectSounds = ["alien.mp3","fire.mp3","bubble.mp3"];
+	var currentEffect = undefined;
+    
     // -- FUNCTIONS
 	function init(){
         // bg sounds
 		bgAudio = document.querySelector("#bgAudio");
-		bgAudio.volume = 0.25;
+		bgAudio.volume = 0.2;
         currentBGAudio = bgSounds[0];
         
         // sound effects
@@ -36,28 +35,32 @@ app.sound = (function(){
         //bgAudio.src = "sounds/" + bgSounds[app.main.expState - 1];
         bgAudio.play();
     }
+    
+    function playEffect(){
+		//effectAudio.src = "sounds/" + effectSounds[currentEffect];
+		effectAudio.play();
+        
+	}
 		
 	function stopBGAudio(){
 		bgAudio.pause();
 		//bgAudio.currentTime = 0;
 	}
     
-    function changeBGAudio() {
+    function stopEffect(){
+        effectAudio.pause();
+    }
+    
+    function changeAudio() {
         bgAudio.pause();
+        effectAudio.pause();
+        
+        effectAudio.src="sounds/" + effectSounds[app.main.expState -1 ];
         bgAudio.src = "sounds/" + bgSounds[app.main.expState - 1];
         bgAudio.play();
+        effectAudio.play();
     }
 	
-	function playEffect(){
-		effectAudio.src = "sounds/" + effectSounds[currentEffect];
-		effectAudio.play();
-        
-		currentEffect += currentDirection;
-		if (currentEffect == effectSounds.length || currentEffect == -1){
-			currentDirection *= -1;
-			currentEffect += currentDirection;
-		}
-	}
     
     function soundTest() {
         console.log("sound: function test");
@@ -69,7 +72,8 @@ app.sound = (function(){
         init: init,
         playBGAudio: playBGAudio,
         stopBGAudio: stopBGAudio,
-        changeBGAudio: changeBGAudio,
+        changeAudio: changeAudio,
+        stopEffect: stopEffect,
         playEffect: playEffect,
         soundTest: soundTest,
     };

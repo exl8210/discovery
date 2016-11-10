@@ -26,7 +26,7 @@ document.querySelector("#campState").onchange = function(e){
         app.main.room.map.generate(app.main.expState);
         
         // change sound
-        app.sound.changeBGAudio();
+        app.sound.changeAudio();
     }
     
     slideBack();
@@ -42,7 +42,7 @@ document.querySelector("#spaceState").onchange = function(e){
         app.main.room.map.generate(app.main.expState);
         
         // change sound
-        app.sound.changeBGAudio();
+        app.sound.changeAudio();
     }
     
     slideBack();
@@ -58,7 +58,7 @@ document.querySelector("#underwaterState").onchange = function(e){
         app.main.room.map.generate(app.main.expState);
         
         // change sound
-        app.sound.changeBGAudio();
+        app.sound.changeAudio();
     }
     
     slideBack();
