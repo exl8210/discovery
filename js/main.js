@@ -123,7 +123,7 @@ app.main = {
         this.room.map = this.scene.map;
         
         // generate large image texture --> the first one should be CAMPFIRE
-        this.room.map.generate(this.EXP_STATE.SPACE);
+        this.room.map.generate(this.EXP_STATE.CAMPFIRE);
         // *** EVERY TIME ANOTHER SCENE IS SELECTED, WE HAVE TO REGENERATE THE MAP ***
         // capture selection --> pass into generate using: 
         // this.room.map.generate(this.expState);
@@ -140,10 +140,10 @@ app.main = {
         //console.dir(this.camera);
         
         // follower
-        this.follower.xPos = getRandom(0, this.canvas.width);
-        this.follower.yPos = getRandom(0, this.canvas.height);
-        this.follower.xSpeed = getRandom(-2.0, 2.0);
-        this.follower.ySpeed = getRandom(-2.0, 2.0);
+        this.sprite.fish.xPos = getRandom(0, this.canvas.width);
+        this.sprite.fish.yPos = getRandom(0, this.canvas.height);
+        this.sprite.fish.xSpeed = getRandom(1.0, 3.0);
+        this.sprite.fish.ySpeed = getRandom(1.0, 3.0);
     
         //Emitter
         this.exhaust = new this.Emitter();
@@ -220,14 +220,14 @@ app.main = {
                     
                     // move sprits and objects
                     activeSprite.xPos -= this.speed;
-                    this.follower.xPos -= this.speed;
+                    this.sprite.fish.xPos -= this.speed;
                 }
                 else {
                     // reposition camera at edge
                     cam.xView = this.room.map.width - this.WIDTH;
                     
                     // make sure offset is an appropriate amount
-                    this.room.offset = this.room.map.width - this.follower.width;
+                    this.room.offset = this.room.map.width - this.sprite.fish.sheetWidth/4;
                 }
             }
             
@@ -243,7 +243,7 @@ app.main = {
                     
                     // move sprits and objects
                     activeSprite.xPos += this.speed;
-                    this.follower.xPos += this.speed;
+                    this.sprite.fish.xPos += this.speed;
                 }
                 else {
                     // reposition camera at edge
@@ -319,21 +319,25 @@ app.main = {
     
     // follower moving to target (mouse click)
     drawFollower: function(ctx) {        
-        var f = this.follower;
+        var f = this.sprite.fish;
+        var fWidth = f.sheetWidth/4;
+        var fHeight = f.sheetHeight;
         
         if (f.isFollowing) {
-            if (f.xPos < f.targetX - f.width/2) {  // according to obj's centre
-                f.xPos += f.step;
+            if (f.xPos <= f.targetX - fWidth/2) {  // according to obj's centre
+                f.xPos += Math.abs(f.xSpeed);
+                f.image.src ="images/fishSprite.png";
             }
-            else if (f.xPos > f.targetX - f.width/2) {
-                f.xPos -= f.step;
+            else if (f.xPos > f.targetX - fWidth/2) {
+                f.xPos -= Math.abs(f.xSpeed);
+                f.image.src ="images/fishFlip.png";
             }
             
-            if (f.yPos < f.targetY - f.height/2) {
-                f.yPos += f.step;
+            if (f.yPos <= f.targetY - fHeight/2) {
+                f.yPos += Math.abs(f.ySpeed);
             }
-            else if (f.yPos > f.targetY - f.height/2) {
-                f.yPos -= f.step;
+            else if (f.yPos > f.targetY - fHeight/2) {
+                f.yPos -= Math.abs(f.ySpeed);
             }
             
             if(this.isWithin(f.xPos, f.yPos, f)) {
@@ -341,6 +345,7 @@ app.main = {
                 
                 f.xSpeed *= -1;
                 f.ySpeed *= -1;
+                f.flip();
             }
         }
         else {
@@ -352,11 +357,13 @@ app.main = {
             if (f.xPos <= 0 - this.room.offset) {
                 f.xPos = 0;
                 f.xSpeed *= -1;
+                f.flip();
             }
             
-            if (f.xPos >= this.room.map.width - f.width) {
-                f.xPos = this.room.map.width - f.width;
+            if (f.xPos >= this.room.map.width - this.sprite.spriteCanvas.width - fWidth) {
+                f.xPos = this.room.map.width - this.sprite.spriteCanvas.width - fWidth;
                 f.xSpeed *= -1;
+                f.flip();
             }
             
             if (f.yPos <= 0) {
@@ -364,14 +371,11 @@ app.main = {
                 f.ySpeed *= -1;
             }
             
-            if (f.yPos >= this.room.map.height - f.height) {
-                f.yPos = this.room.map.height - f.height;
+            if (f.yPos >= this.room.map.height - fHeight) {
+                f.yPos = this.room.map.height - fHeight;
                 f.ySpeed *= -1;
             }
         }
-        
-        ctx.fillStyle="white";
-        ctx.fillRect(f.xPos, f.yPos, f.width, f.height);
     },
     
     // collision detection between follower and target
@@ -379,10 +383,12 @@ app.main = {
         var within = false;
         var xWithin = false;
         var yWithin = false;
+        var fWidth = f.sheetWidth/4;
+        var fHeight = f.sheetHeight;
         
         // distance formula
-        var dx = (x - (f.targetX - f.width/2)) * (x - (f.targetX - f.width/2));
-        var dy = (y - (f.targetY - f.height/2)) * (y - (f.targetY - f.height/2));
+        var dx = (x - (f.targetX - fWidth/2)) * (x - (f.targetX - fWidth/2));
+        var dy = (y - (f.targetY - fHeight/2)) * (y - (f.targetY - fHeight/2));
         var dist = Math.sqrt(dx + dy);
         
         if (dist < 3) {
@@ -474,10 +480,10 @@ app.main = {
         }
         
         // follower
-        this.follower.targetX = mouse.x;
-        this.follower.targetY = mouse.y;
+        this.sprite.fish.targetX = mouse.x;
+        this.sprite.fish.targetY = mouse.y;
 
-        this.follower.isFollowing = true;
+        this.sprite.fish.isFollowing = true;
     },
     
 };

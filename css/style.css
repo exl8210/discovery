@@ -156,5 +156,6 @@ canvas#scrollCanvas {
 #audioControls {
     /*display: none;*/
     top: 480px;
+    left: 10px;
     position: relative;
 }
