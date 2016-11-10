@@ -121,8 +121,8 @@ app.sprite = (function () {
         xPos: canvas.width/2,
         yPos: canvas.height/2,
         image: fishImg,
-        numberOfFrames: 3,
-        ticksPerFrame: 7
+        numberOfFrames: 4,
+        ticksPerFrame: 15
     });
     
     //create fire sprites
@@ -145,7 +145,7 @@ app.sprite = (function () {
 
     //load fish sprite sheet
     fishImg.addEventListener("load", gameLoop);
-    fishImg.src="";
+    fishImg.src="images/fishSprite.png";
     
     //load fire sprite sheet
     fireImg.addEventListener("load", gameLoop);
@@ -153,7 +153,7 @@ app.sprite = (function () {
 
 
     return {
-        //return objects
+        //return objects to move/place later
         alien: alien,
         fish: fish,
         fire: fire,
