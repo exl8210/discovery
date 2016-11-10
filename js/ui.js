@@ -18,9 +18,15 @@ function slideBack(){
 
 document.querySelector("#campState").onchange = function(e){
     if(e.target.checked == true){
+        // change state
         app.main.expState = app.main.EXP_STATE.CAMPFIRE;
         console.log("state changed to " + app.main.expState);
+        
+        // regenerate room
         app.main.room.map.generate(app.main.expState);
+        
+        // change sound
+        app.sound.changeBGAudio();
     }
     
     slideBack();
@@ -28,9 +34,15 @@ document.querySelector("#campState").onchange = function(e){
 
 document.querySelector("#spaceState").onchange = function(e){
     if(e.target.checked == true){
+        // change state
         app.main.expState = app.main.EXP_STATE.SPACE;
         console.log("state changed to " + app.main.expState);
+        
+        // regenerate room
         app.main.room.map.generate(app.main.expState);
+        
+        // change sound
+        app.sound.changeBGAudio();
     }
     
     slideBack();
@@ -38,9 +50,15 @@ document.querySelector("#spaceState").onchange = function(e){
 
 document.querySelector("#underwaterState").onchange = function(e){
     if(e.target.checked == true){
+        // change state
         app.main.expState = app.main.EXP_STATE.UNDERWATER;
         console.log("state changed to " + app.main.expState);
+        
+        // regenerate room
         app.main.room.map.generate(app.main.expState);
+        
+        // change sound
+        app.sound.changeBGAudio();
     }
     
     slideBack();

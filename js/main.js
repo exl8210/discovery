@@ -119,7 +119,7 @@ app.main = {
         this.room.map = this.scene.map;
         
         // generate large image texture --> the first one should be CAMPFIRE
-        this.room.map.generate(this.EXP_STATE.CAMPFIRE);
+        this.room.map.generate(this.EXP_STATE.SPACE);
         // *** EVERY TIME ANOTHER SCENE IS SELECTED, WE HAVE TO REGENERATE THE MAP ***
         // capture selection --> pass into generate using: 
         // this.room.map.generate(this.expState);
@@ -419,7 +419,7 @@ app.main = {
         this.topCtx.fillText("COME BACK SOON? :(", this.WIDTH/2, this.HEIGHT/2 + 30);
         this.topCtx.restore();
     },
-    
+    	
     // audio
     stopBGAudio: function() {
         this.sound.stopBGAudio();
@@ -440,9 +440,6 @@ app.main = {
     doMouseDown: function(e) {
         var mouse = getMouse(e);
         
-        // play audio
-        this.sound.playBGAudio();
-        
         // unpause on a click
         // just to make sure we never get stuck in a paused state
         if (this.paused) {
@@ -455,6 +452,7 @@ app.main = {
         // title screen
         if (this.expState == this.EXP_STATE.BEGIN) {
             this.expState = this.EXP_STATE.SPACE;
+            this.sound.playBGAudio();
             
             return;
         }

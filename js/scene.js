@@ -37,7 +37,7 @@ app.scene = (function(){
             ctx.save();			
             
             switch (scene) {
-                case app.main.EXP_STATE.HOME:
+                case app.main.EXP_STATE.CAMPFIRE:
                     ctx.fillStyle = "#b18c71";		    
                     ctx.fillRect(0, 0, this.width, this.height);
                     

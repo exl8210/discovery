@@ -11,7 +11,8 @@ app.sound = (function(){
     
     // bg audio
 	var bgAudio = undefined;
-    var bgSounds = ["campfire.mp3", "space.mp3", "underwater.mp3"];
+    var bgSounds = ["space.mp3", "campfire.mp3", "underwater.mp3"];
+    var currentBGAudio = undefined;
     
     // effect audio
 	var effectAudio = undefined;
@@ -21,25 +22,36 @@ app.sound = (function(){
 	
     // -- FUNCTIONS
 	function init(){
+        // bg sounds
 		bgAudio = document.querySelector("#bgAudio");
-		bgAudio.volume=0.25;
+		bgAudio.volume = 0.25;
+        currentBGAudio = bgSounds[0];
+        
+        // sound effects
 		effectAudio = document.querySelector("#effectAudio");
 		effectAudio.volume = 0.3;
 	}
 		
     function playBGAudio() {
-        bgAudio.src = "sounds/" + bgSounds[app.main.expState];
+        //bgAudio.src = "sounds/" + bgSounds[app.main.expState - 1];
         bgAudio.play();
     }
 		
 	function stopBGAudio(){
 		bgAudio.pause();
-		bgAudio.currentTime = 0;
+		//bgAudio.currentTime = 0;
 	}
+    
+    function changeBGAudio() {
+        bgAudio.pause();
+        bgAudio.src = "sounds/" + bgSounds[app.main.expState - 1];
+        bgAudio.play();
+    }
 	
 	function playEffect(){
 		effectAudio.src = "sounds/" + effectSounds[currentEffect];
 		effectAudio.play();
+        
 		currentEffect += currentDirection;
 		if (currentEffect == effectSounds.length || currentEffect == -1){
 			currentDirection *= -1;
@@ -57,6 +69,7 @@ app.sound = (function(){
         init: init,
         playBGAudio: playBGAudio,
         stopBGAudio: stopBGAudio,
+        changeBGAudio: changeBGAudio,
         playEffect: playEffect,
         soundTest: soundTest,
     };
