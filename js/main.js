@@ -21,14 +21,14 @@ app.main = {
     
     // experience states
     // 1. begin
-    // 2. home
+    // 2. campfire
     // 3. space
     // 4. underwater
     expState: undefined,
     EXP_STATE: Object.freeze({
         BEGIN: 0,
         SPACE: 1,
-        HOME: 2,
+        CAMPFIRE: 2,
         UNDERWATER: 3,
         INFO: 4
     }),
@@ -118,8 +118,8 @@ app.main = {
         // map
         this.room.map = this.scene.map;
         
-        // generate large image texture --> the first one should be HOME
-        this.room.map.generate(this.EXP_STATE.SPACE);
+        // generate large image texture --> the first one should be CAMPFIRE
+        this.room.map.generate(this.EXP_STATE.CAMPFIRE);
         // *** EVERY TIME ANOTHER SCENE IS SELECTED, WE HAVE TO REGENERATE THE MAP ***
         // capture selection --> pass into generate using: 
         // this.room.map.generate(this.expState);
@@ -170,7 +170,7 @@ app.main = {
         var activeSprite;
         
         switch(this.expState) {
-            case this.EXP_STATE.HOME:
+            case this.EXP_STATE.CAMPFIRE:
                 activeSprite = sprite.fire;
                 break;
 
@@ -426,7 +426,7 @@ app.main = {
     },
     
     playEffect: function() {
-        this.effectAudio.src = "assets/sounds/" + this.effectSounds[this.currentEffect];
+        this.effectAudio.src = "sounds/" + this.effectSounds[this.currentEffect];
         this.effectAudio.play();
         
         this.currentEffect += this.currentDirection;

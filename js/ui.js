@@ -16,9 +16,9 @@ function slideBack(){
     document.getElementById("sideNav").style.visibility = "hidden";
 }
 
-document.querySelector("#homeState").onchange = function(e){
+document.querySelector("#campState").onchange = function(e){
     if(e.target.checked == true){
-        app.main.expState = app.main.EXP_STATE.HOME;
+        app.main.expState = app.main.EXP_STATE.CAMPFIRE;
         console.log("state changed to " + app.main.expState);
         app.main.room.map.generate(app.main.expState);
     }

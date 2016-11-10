@@ -32,8 +32,8 @@ app.sprite = (function () {
 
         }
         
-        //when in home gamestate
-        if(app.main.expState == app.main.EXP_STATE.HOME){
+        //when in campfire gamestate
+        if(app.main.expState == app.main.EXP_STATE.CAMPFIRE){
             fire.update();
             fire.render();
             console.log("fire says crackle");

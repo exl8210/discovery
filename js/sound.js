@@ -8,7 +8,12 @@ var app = app || {};
 app.sound = (function(){
     // -- VARIABLES
 	console.log("sound.js module loaded");
+    
+    // bg audio
 	var bgAudio = undefined;
+    var bgSounds = ["campfire.mp3", "space.mp3", "underwater.mp3"];
+    
+    // effect audio
 	var effectAudio = undefined;
 	var currentEffect = 0;
 	var currentDirection = 1;
@@ -23,6 +28,7 @@ app.sound = (function(){
 	}
 		
     function playBGAudio() {
+        bgAudio.src = "sounds/" + bgSounds[app.main.expState];
         bgAudio.play();
     }
 		
@@ -32,7 +38,7 @@ app.sound = (function(){
 	}
 	
 	function playEffect(){
-		effectAudio.src = "media/" + effectSounds[currentEffect];
+		effectAudio.src = "sounds/" + effectSounds[currentEffect];
 		effectAudio.play();
 		currentEffect += currentDirection;
 		if (currentEffect == effectSounds.length || currentEffect == -1){
