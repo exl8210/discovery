@@ -86,21 +86,20 @@ app.sprite = (function () {
             that.context.drawImage(that.image, frameIndex * that.sheetWidth / numberOfFrames, 0, that.sheetWidth / numberOfFrames, that.sheetHeight, that.xPos, that.yPos, that.sheetWidth/numberOfFrames, that.sheetHeight);
         };
         
-        // flip sprite
         that.flip = function() {
-            
+            if (!that.isFlipped && that.xSpeed < 0) {
+                that.image.src ="images/fishFlip.png";
+            }
+            else {
+                that.image.src ="images/fishSprite.png";
+            }
         };
         
         return that;
         
     }
-<<<<<<< Updated upstream
 
-    //get the Sprite canvas
-=======
-    
     //get the canvas
->>>>>>> Stashed changes
     canvas = document.getElementById("spriteCanvas");
     canvas.width = 1280;
     canvas.height = 460;
@@ -128,9 +127,6 @@ app.sprite = (function () {
         context: canvas.getContext("2d"),
         sheetWidth: 499,
         sheetHeight: 123,
-        image: fishImg,
-        numberOfFrames: 4,
-        ticksPerFrame: 15,
         xPos: canvas.width/2,
         yPos: canvas.height/2,
         xSpeed: undefined,
@@ -138,8 +134,12 @@ app.sprite = (function () {
         isFollowing: false,
         targetX: undefined,
         targetY: undefined,
+        isFlipped: false,
+        image: fishImg,
+        numberOfFrames: 4,
+        ticksPerFrame: 15
     });
-
+    
     //create fire sprites
     fire = sprite({
         context: canvas.getContext("2d"),

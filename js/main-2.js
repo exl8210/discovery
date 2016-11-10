@@ -138,8 +138,8 @@ app.main = {
         // follower
         //this.sprite.fish.xPos = getRandom(0, this.canvas.width);
         //this.sprite.fish.yPos = getRandom(0, this.canvas.height);
-        this.sprite.fish.xSpeed = getRandom(-2.0, 2.0);
-        this.sprite.fish.ySpeed = getRandom(-2.0, 2.0);
+        this.sprite.fish.xSpeed = getRandom(1.0, 3.0);
+        this.sprite.fish.ySpeed = getRandom(1.0, 3.0);
         
         //-------SOUND----------
         // start with no audio
@@ -311,14 +311,16 @@ app.main = {
         var fHeight = f.sheetHeight;
         
         if (f.isFollowing) {
-            if (f.xPos < f.targetX - fWidth/2) {  // according to obj's centre
+            if (f.xPos <= f.targetX - fWidth/2) {  // according to obj's centre
                 f.xPos += Math.abs(f.xSpeed);
+                f.image.src ="images/fishSprite.png";
             }
             else if (f.xPos > f.targetX - fWidth/2) {
                 f.xPos -= Math.abs(f.xSpeed);
+                f.image.src ="images/fishFlip.png";
             }
             
-            if (f.yPos < f.targetY - fHeight/2) {
+            if (f.yPos <= f.targetY - fHeight/2) {
                 f.yPos += Math.abs(f.ySpeed);
             }
             else if (f.yPos > f.targetY - fHeight/2) {
@@ -330,6 +332,7 @@ app.main = {
                 
                 f.xSpeed *= -1;
                 f.ySpeed *= -1;
+                f.flip();
             }
         }
         else {
@@ -341,11 +344,13 @@ app.main = {
             if (f.xPos <= 0 - this.room.offset) {
                 f.xPos = 0;
                 f.xSpeed *= -1;
+                f.flip();
             }
             
             if (f.xPos >= this.room.map.width - this.sprite.spriteCanvas.width - fWidth) {
                 f.xPos = this.room.map.width - this.sprite.spriteCanvas.width - fWidth;
                 f.xSpeed *= -1;
+                f.flip();
             }
             
             if (f.yPos <= 0) {
