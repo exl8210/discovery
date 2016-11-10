@@ -134,7 +134,7 @@ app.sprite = (function () {
         xPos: canvas.width/2,
         yPos: canvas.height/2,
         numberOfFrames: 3,
-        ticksPerFrame: 7
+        ticksPerFrame: 15
     });
 
     
