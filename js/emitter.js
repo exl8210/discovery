@@ -14,15 +14,14 @@ app.Emitter = function(){
         //public
         this.numParticles = 25;
         this.useCircles = true;
-        this.useSquares = false;
         this.xRange = 4;
         this.yRange = 4;
         this.minXspeed = -1;
         this.minYspeed = 2;
         this.maxXspeed = 1;
         this.maxYspeed = 4;
-        this.startRadius = 1;
-        this.expansionRate = 0.3;
+        this.startRadius = 4;
+        this.expansionRate = 1;
         this.decayRate = 2.5;
         this.lifetime = 100;
         this.color = 'white';
@@ -33,6 +32,7 @@ app.Emitter = function(){
     
     //public methods
     var p = Emitter.prototype;
+    console.log(p);
     
     p.createParticles = function(emitterPoint){
         //initalize array
@@ -53,25 +53,19 @@ app.Emitter = function(){
     p.updateAndDraw = function(ctx, emitterPoint) {
         //move and draw particles
         //loop through particle array
-        for(var i = 0; i<this._particles.length; i++){
+        for(var i = 0; i <this._particles.length; i++){
             var p = this._particles[i];
             
             p.age += this.decayRate;
             p.r += this.expansionRate;
             p.x += p.xSpeed;
-            p.y += p.ySpeed;
-            var alpha = 1 - p.age/this.lifetime;
-            
-            if(this.useSquares){
-                //fill a rectangle
-                ctx.fillStyle = "white";
-                ctx.fillRect(p.x, p.y, p.r, p.r);
-            }
+            p.y -= p.ySpeed;
+            //var alpha = 1 - p.age/this.lifetime;
             
             if(this.useCircles){
                 ctx.fillStyle = "white";
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.y, Math.PI * 2, false);
+                ctx.arc(p.x, p.y, p.r, Math.PI * 2, false);
                 ctx.closePath();
                 ctx.fill();
             }
@@ -99,5 +93,6 @@ app.Emitter = function(){
     };
     
     return Emitter;
+    return p.x;
 
 }();

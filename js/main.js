@@ -88,7 +88,8 @@ app.main = {
     
     Emitter: undefined,
     exhaust: undefined,
-    
+    emitterX: undefined,
+    emitterY: undefined,
 
     // --- Methods
     // initialise main
@@ -147,9 +148,10 @@ app.main = {
     
         //Emitter
         this.exhaust = new this.Emitter();
-        this.exhaust.numParticles = 100;
-        this.exhaust.createParticles({x:100, y:100});
-    
+        this.exhaust.numParticles = 10;
+        this.emitterX = this.canvas.width/2 + 60;
+        this.emitterY = this.canvas.height/2;
+        this.exhaust.createParticles({emitterX, emitterY});
         
         //-------SOUND----------
         // start with no audio
@@ -218,9 +220,14 @@ app.main = {
                     // change world offset
                     this.room.offset++;
                     
-                    // move sprits and objects
+                    // move sprites and objects
                     activeSprite.xPos -= this.speed;
+<<<<<<< HEAD
                     this.sprite.fish.xPos -= this.speed;
+=======
+                    this.exhaust.emitter -= this.speed;
+                    this.follower.xPos -= this.speed;
+>>>>>>> origin/master
                 }
                 else {
                     // reposition camera at edge
@@ -241,9 +248,14 @@ app.main = {
                     // change world offset
                     this.room.offset--;
                     
-                    // move sprits and objects
+                    // move sprites and objects
                     activeSprite.xPos += this.speed;
+<<<<<<< HEAD
                     this.sprite.fish.xPos += this.speed;
+=======
+                    this.p.x += this.speed;
+                    this.follower.xPos += this.speed;
+>>>>>>> origin/master
                 }
                 else {
                     // reposition camera at edge
@@ -422,7 +434,7 @@ app.main = {
         
         if (this.expState == this.EXP_STATE.CAMPFIRE) {
             //if on campfire state, display "smoke"
-            this.exhaust.updateAndDraw(this.ctx, {x:100, y:100});
+            this.exhaust.updateAndDraw(this.ctx, {emitterX, emitterY});
         
         }
         
