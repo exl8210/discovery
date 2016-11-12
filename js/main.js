@@ -34,8 +34,11 @@ app.main = {
     }),
     activeSprite: undefined,
     
-    // intro image
+    // image preloading
+    // - intro image
     titleCard: undefined,
+    // - campfire log
+    fireLog: undefined,
     
     // sounds
     sound: undefined,
@@ -96,7 +99,6 @@ app.main = {
         
         // --- initialise experience
         this.expState = this.EXP_STATE.BEGIN;
-        //this.expState = this.EXP_STATE.SPACE;
         
         // hook up events
         this.topCanvas.onmousedown = this.canvas.onmousedown = this.doMouseDown.bind(this);
@@ -108,9 +110,13 @@ app.main = {
         this.effectAudio.volume = 0.3;
         
         // --- initialise scene
+        this.titleCard = this.fireLog = new Image();
+        
         // intro image
-        this.titleCard = new Image();
         this.titleCard.src = "images/titleCard.png";
+        
+        // campfire log image
+        this.fireLog.src = "images/logs.png";
         
         // map
         this.room.map = this.scene.map;
@@ -121,6 +127,21 @@ app.main = {
         // capture selection --> pass into generate using: 
         // this.room.map.generate(this.expState);
         
+        // follower
+        this.sprite.fish.xPos = getRandom(0, this.canvas.width);
+        this.sprite.fish.yPos = getRandom(0, this.canvas.height);
+        this.sprite.fish.xSpeed = getRandom(1.0, 3.0);
+        this.sprite.fish.ySpeed = getRandom(1.0, 3.0);
+    
+        // Emitter object
+        this.exhaust = new this.Emitter();
+        this.exhaust.numParticles = 10;
+        this.emitterX = this.room.width + 180;
+        this.initEmitX = this.emitterX;
+        this.emitterY = this.canvas.height/2;
+        this.exhaust.createParticles({x: this.emitterX, y: this.emitterY});
+        
+        // --- initialise camera
         // movement
         this.speed = this.INIT_SPEED;
         
@@ -130,21 +151,7 @@ app.main = {
         // world boundary rectangle
         this.camera.worldRect = new this.scene.Viewport(0, 0, this.room.width, this.room.height);
         
-        // follower
-        this.sprite.fish.xPos = getRandom(0, this.canvas.width);
-        this.sprite.fish.yPos = getRandom(0, this.canvas.height);
-        this.sprite.fish.xSpeed = getRandom(1.0, 3.0);
-        this.sprite.fish.ySpeed = getRandom(1.0, 3.0);
-    
-        //Emitter
-        this.exhaust = new this.Emitter();
-        this.exhaust.numParticles = 10;
-        this.emitterX = this.room.width + 180;
-        this.initEmitX = this.emitterX;
-        this.emitterY = this.canvas.height/2;
-        this.exhaust.createParticles({x: this.emitterX, y: this.emitterY});
-        
-        //-------SOUND----------
+        // --- SOUND
         // start with no audio
         this.sound.stopBGAudio();
         this.sound.stopEffect();
@@ -256,11 +263,17 @@ app.main = {
     
     // reset camera view
     camReset: function() {
+        // reset camera x position
         this.camera.xView = 0;
+        
+        // reset where emitter should be
         this.emitterX = this.initEmitX;
+        
+        // if on campfire, place campfire on logs
         if (this.expState == this.EXP_STATE.CAMPFIRE) {
             this.sprite.fire.xPos = this.initEmitX - 60;
         }
+        // otherwise, place sprite on its initial position
         else {
             this.activeSprite.xPos = 640;
         }
@@ -326,11 +339,13 @@ app.main = {
     },
     
     // follower moving to target (mouse click)
-    drawFollower: function(ctx) {        
+    drawFollower: function(ctx) {    
+        // variables
         var f = this.sprite.fish;
         var fWidth = f.sheetWidth/4;
         var fHeight = f.sheetHeight;
         
+        // determine follower movement while it's following the mouse click
         if (f.isFollowing) {
             if (f.xPos <= f.targetX - fWidth/2) {  // according to obj's centre
                 f.xPos += Math.abs(f.xSpeed);
@@ -348,6 +363,7 @@ app.main = {
                 f.yPos -= Math.abs(f.ySpeed);
             }
             
+            // if the follower has met the mouse click
             if(this.isWithin(f.xPos, f.yPos, f)) {
                 f.isFollowing = false;
                 
@@ -356,12 +372,14 @@ app.main = {
                 f.flip();
             }
         }
+        // if the mouse hasn't been clicked yet, the fish just moves
         else {
             // move object
             f.xPos += f.xSpeed;
             f.yPos += f.ySpeed;
             
             // collision detection (relative to map)
+            // - left, right
             if (f.xPos <= 0 - this.room.offset) {
                 f.xPos = 0;
                 f.xSpeed *= -1;
@@ -374,6 +392,7 @@ app.main = {
                 f.flip();
             }
             
+            // - top, bottom
             if (f.yPos <= 0) {
                 f.yPos = 0;
                 f.ySpeed *= -1;
@@ -431,12 +450,11 @@ app.main = {
             ctx.drawImage(this.titleCard, 0, 0);
         }
         
-        
+        // draw emitter when in campfire scene
         if (this.expState == this.EXP_STATE.CAMPFIRE) {
             //if on campfire state, display "smoke"
             this.exhaust.updateAndDraw(this.ctx, {x: this.emitterX, y: this.emitterY});
         }
-        
     },
     
     // pause
