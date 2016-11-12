@@ -110,12 +110,13 @@ app.main = {
         this.effectAudio.volume = 0.3;
         
         // --- initialise scene
-        this.titleCard = this.fireLog = new Image();
         
         // intro image
+        this.titleCard = new Image();
         this.titleCard.src = "images/titleCard.png";
         
         // campfire log image
+        this.fireLog = new Image();
         this.fireLog.src = "images/logs.png";
         
         // map
