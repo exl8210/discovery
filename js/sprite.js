@@ -20,7 +20,7 @@ app.sprite = (function () {
         if(app.main.expState == app.main.EXP_STATE.SPACE){ 
             alien.update();
             alien.render();
-            console.log("alien says (@*#");
+            //console.log("alien says (@*#");
         }
         
         
@@ -28,7 +28,7 @@ app.sprite = (function () {
         if(app.main.expState == app.main.EXP_STATE.UNDERWATER){
             fish.update();
             fish.render();
-            console.log("fish says blub");
+            //console.log("fish says blub");
 
         }
         
@@ -36,7 +36,7 @@ app.sprite = (function () {
         if(app.main.expState == app.main.EXP_STATE.CAMPFIRE){
             fire.update();
             fire.render();
-            console.log("fire says crackle");
+            //console.log("fire says crackle");
         }
        
         

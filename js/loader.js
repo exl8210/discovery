@@ -34,13 +34,13 @@ window.onload = function(){
 
 // --- Pausing/unpausing
 window.onblur = function() {
-    console.log("blur at " + Date());
+    //console.log("blur at " + Date());
     
     app.main.pause();
 }
 
 window.onfocus = function() {
-    console.log("focus at " + Date());
+    //console.log("focus at " + Date());
     
     app.main.resume();
 }

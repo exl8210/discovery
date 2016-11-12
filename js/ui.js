@@ -16,49 +16,22 @@ function slideBack(){
     document.getElementById("sideNav").style.visibility = "hidden";
 }
 
-document.querySelector("#campState").onchange = function(e){
-    if(e.target.checked == true){
-        // change state
-        app.main.expState = app.main.EXP_STATE.CAMPFIRE;
-        console.log("state changed to " + app.main.expState);
-        
-        // regenerate room
-        app.main.room.map.generate(app.main.expState);
-        
-        // reset camera
-        app.main.camReset();
-        
-        // change sound
-        app.sound.changeAudio();
-    }
-    
-    slideBack();
-}
-
 document.querySelector("#spaceState").onchange = function(e){
-    if(e.target.checked == true){
-        // change state
-        app.main.expState = app.main.EXP_STATE.SPACE;
-        console.log("state changed to " + app.main.expState);
-        
-        // regenerate room
-        app.main.room.map.generate(app.main.expState);
-        
-        // reset camera
-        app.main.camReset();
-        
-        // change sound
-        app.sound.changeAudio();
-    }
-    
-    slideBack();
-}
+    switchState(e, 1);
+};
+
+document.querySelector("#campState").onchange = function(e){
+    switchState(e, 2);
+};
 
 document.querySelector("#underwaterState").onchange = function(e){
+    switchState(e, 3);
+};
+
+function switchState(e, state) {
     if(e.target.checked == true){
         // change state
-        app.main.expState = app.main.EXP_STATE.UNDERWATER;
-        console.log("state changed to " + app.main.expState);
+        app.main.expState = state;
         
         // regenerate room
         app.main.room.map.generate(app.main.expState);

@@ -7,6 +7,7 @@ var app = app || {};
 // define the .scene module and immediately invoke it in an IIFE
 app.scene = (function(){
     // --- Variables
+    
     // scene scrolling
     var speed = 5;
     var quickSpeed = false;
@@ -18,10 +19,10 @@ app.scene = (function(){
     var direction = undefined;
     
     // image preloading
-    var imagePaths = ["images/earth.png", "images/jupiter.png", "images/moon.png", "images/potato.png", "images/saturn.png", "images/campfire.png"];
+    var imagePaths = ["images/earth.png", "images/jupiter.png", "images/moon.png", "images/potato.png", "images/saturn.png", "images/campfire.png", "images/reefL.png", "images/reefR.png"];
     var imageArray = [];
     
-    var earth, jupiter, moon, potato, saturn, campfireScene;
+    var earth, jupiter, moon, potato, saturn, campfireScene, reefL, reefR;
     
     // preload
     loadImagesWithCallback(imagePaths, function(images) {
@@ -33,6 +34,8 @@ app.scene = (function(){
         potato = imageArray[3];
         saturn = imageArray[4];
         campfireScene = imageArray[5];
+        reefL = imageArray[6];
+        reefR = imageArray[7];
     });
     
     // === Map
@@ -163,6 +166,9 @@ app.scene = (function(){
                     
                     ctx.restore();
                     
+                    ctx.drawImage(reefL, 0, 0);
+                    ctx.drawImage(reefR, this.width-680, 0)
+                    
                     break;
             }
             
@@ -250,15 +256,9 @@ app.scene = (function(){
                 r.top < this.bottom);
     }
     
-    // === test
-    function sceneTest() {
-        console.log("scene: function test");
-    }
-    
 	return {
         map: map,
-        Viewport: Viewport,
-        //sceneTest: sceneTest,
+        Viewport: Viewport
     };
     
 }());

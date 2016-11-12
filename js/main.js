@@ -34,6 +34,9 @@ app.main = {
     }),
     activeSprite: undefined,
     
+    // intro image
+    introImg: undefined,
+    
     // sounds
     sound: undefined,
     
@@ -105,6 +108,10 @@ app.main = {
         this.effectAudio.volume = 0.3;
         
         // --- initialise scene
+        // intro image
+        this.introImage = new Image();
+        this.introImage.src = "images/titleCard.png";
+        
         // map
         this.room.map = this.scene.map;
         
@@ -251,8 +258,12 @@ app.main = {
     camReset: function() {
         this.camera.xView = 0;
         this.emitterX = this.initEmitX;
-        console.log(this.initEmitX);
-        this.activeSprite.xPos = 640;
+        if (this.expState == this.EXP_STATE.CAMPFIRE) {
+            this.sprite.fire.xPos = this.initEmitX - 60;
+        }
+        else {
+            this.activeSprite.xPos = 640;
+        }
         
         this.update();
     },
