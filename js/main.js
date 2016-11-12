@@ -69,23 +69,7 @@ app.main = {
     isMovingLeft: false,
     isMovingQuickly: false,
     
-    // follower
-    follower: {
-        // object dimensions
-        width: 30,
-        height: 20,
-        
-        // position properties
-        xPos: undefined,
-        yPos: undefined,
-        xSpeed: undefined,
-        ySpeed: undefined,
-        step: 1,
-        isFollowing: false,
-        targetX: undefined,
-        targetY: undefined,
-    },
-    
+    // emitter
     Emitter: undefined,
     exhaust: undefined,
     initEmitX: undefined,
@@ -428,7 +412,7 @@ app.main = {
             
             ctx.fillStyle = "#4a4a4a";
             ctx.font = "16pt Helvetica";
-            ctx.fillText("click anywhere to start exploring!", this.canvas.width/2, this.canvas.height/2 + 30);
+            ctx.fillText("click to start exploring!", this.canvas.width/2, this.canvas.height/2 + 30);
             ctx.restore();
         }
         
@@ -436,7 +420,6 @@ app.main = {
         if (this.expState == this.EXP_STATE.CAMPFIRE) {
             //if on campfire state, display "smoke"
             this.exhaust.updateAndDraw(this.ctx, {x: this.emitterX, y: this.emitterY});
-        
         }
         
     },

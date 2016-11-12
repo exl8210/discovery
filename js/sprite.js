@@ -44,7 +44,7 @@ app.sprite = (function () {
     }
     
     //define the sprite object
-    function sprite(options){
+    function Sprite(options){
         var that = {},
             frameIndex = 0,
             tickCount = 0,
@@ -110,7 +110,7 @@ app.sprite = (function () {
     fireImg = new Image();
     
     //create alien sprites
-    alien = sprite({
+    alien = Sprite({
         context: canvas.getContext("2d"),
         sheetWidth: 499,
         sheetHeight: 123,
@@ -123,7 +123,7 @@ app.sprite = (function () {
     
 
     //create fish sprites
-    fish = sprite({
+    fish = Sprite({
         context: canvas.getContext("2d"),
         sheetWidth: 499,
         sheetHeight: 123,
@@ -141,7 +141,7 @@ app.sprite = (function () {
     });
     
     //create fire sprites
-    fire = sprite({
+    fire = Sprite({
         context: canvas.getContext("2d"),
         sheetWidth: 375,
         sheetHeight: 123,
