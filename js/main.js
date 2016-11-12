@@ -87,8 +87,8 @@ app.main = {
     
     Emitter: undefined,
     exhaust: undefined,
-    emitterX: undefined,
-    emitterY: undefined,
+    //emitterX: undefined,
+    //emitterY: undefined,
 
     // --- Methods
     // initialise main
@@ -150,7 +150,7 @@ app.main = {
         this.exhaust.numParticles = 10;
         this.emitterX = this.canvas.width/2 + 60;
         this.emitterY = this.canvas.height/2;
-        this.exhaust.createParticles({emitterX, emitterY});
+        this.exhaust.createParticles({x: this.canvas.width/2 + 60, y: this.canvas.height/2});
         
         //-------SOUND----------
         // start with no audio
@@ -425,7 +425,7 @@ app.main = {
         
         if (this.expState == this.EXP_STATE.CAMPFIRE) {
             //if on campfire state, display "smoke"
-            this.exhaust.updateAndDraw(this.ctx, {emitterX, emitterY});
+            this.exhaust.updateAndDraw(this.ctx, {x: this.canvas.width/2 + 60, y: this.canvas.height/2});
         
         }
         

@@ -93,6 +93,6 @@ app.Emitter = function(){
     };
     
     return Emitter;
-    return p.x;
+    
 
 }();
