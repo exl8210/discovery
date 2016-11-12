@@ -6,8 +6,8 @@
     border: 0;
     box-sizing: border-box;
     text-decoration: none;
-    font-family: "helvetica";
-    font-weight: 100;
+    font-family: "Work Sans", sans-serif;
+    font-weight: 200;
 }
 
 
@@ -34,8 +34,8 @@ body {
 }
 
 h1 {
-    font-family: "helvetica";
-    font-weight: 100;
+    font-family: "Work Sans", sans-serif;
+    font-weight: 200;
     padding-left: 30px;
     padding-top:20px;
     font-size: 40px;
@@ -47,6 +47,7 @@ h1 {
 
 h2{
     font-size: 30px; 
+    font-weight: 400;
     padding: 20px 0 30px 30px;
     display: block;
     color: darkgrey;
@@ -67,8 +68,8 @@ p{
 }
 
 #buttons{
-    font-family: "helvetica";
-    font-weight: 100;
+    font-family: "Work Sans", sans-serif;
+    font-weight: 200;
     text-decoration: none;
     padding-left: 30px;
     padding-top:30px;

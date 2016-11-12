@@ -7,8 +7,6 @@ var app = app || {};
 // define the .sound module and immediately invoke it in an IIFE
 app.sound = (function(){
     // -- VARIABLES
-	console.log("sound.js module loaded");
-    
     // bg audio
 	var bgAudio = undefined;
     var bgSounds = ["space.mp3", "campfire.mp3", "underwater.mp3"];
@@ -23,28 +21,27 @@ app.sound = (function(){
 	function init(){
         // bg sounds
 		bgAudio = document.querySelector("#bgAudio");
-		bgAudio.volume = 0.2;
+		bgAudio.volume = 1.0;
         currentBGAudio = bgSounds[0];
         
         // sound effects
 		effectAudio = document.querySelector("#effectAudio");
 		effectAudio.volume = 0.3;
+        currentEffect = effectSounds[0];
 	}
 		
     function playBGAudio() {
-        //bgAudio.src = "sounds/" + bgSounds[app.main.expState - 1];
+        bgAudio.src = "sounds/" + bgSounds[app.main.expState - 1];
         bgAudio.play();
     }
     
     function playEffect(){
-		//effectAudio.src = "sounds/" + effectSounds[currentEffect];
+		effectAudio.src = "sounds/" + effectSounds[app.main.expState - 1];
 		effectAudio.play();
-        
 	}
 		
 	function stopBGAudio(){
 		bgAudio.pause();
-		//bgAudio.currentTime = 0;
 	}
     
     function stopEffect(){
@@ -55,17 +52,13 @@ app.sound = (function(){
         bgAudio.pause();
         effectAudio.pause();
         
-        effectAudio.src="sounds/" + effectSounds[app.main.expState -1 ];
+        effectAudio.src="sounds/" + effectSounds[app.main.expState - 1];
         bgAudio.src = "sounds/" + bgSounds[app.main.expState - 1];
+        
         bgAudio.play();
         effectAudio.play();
     }
 	
-    
-    function soundTest() {
-        console.log("sound: function test");
-    }
-    
 	// export a public interface to this module
     // the REVEALING MODULE PATTERN --> reveal public references to methods inside the module's scope
 	return {
@@ -74,8 +67,7 @@ app.sound = (function(){
         stopBGAudio: stopBGAudio,
         changeAudio: changeAudio,
         stopEffect: stopEffect,
-        playEffect: playEffect,
-        soundTest: soundTest,
+        playEffect: playEffect
     };
     
 }());

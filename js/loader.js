@@ -14,8 +14,6 @@ var app = app || {};
 
 // --- Load main app
 window.onload = function(){
-	//console.log("window.onload called");
-    
     // hook up the sound
     app.sound.init();
     app.main.sound = app.sound;
@@ -32,7 +30,6 @@ window.onload = function(){
     // load main app
 	app.main.init();
     
-
 }
 
 // --- Pausing/unpausing

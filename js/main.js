@@ -21,8 +21,8 @@ app.main = {
     
     // experience states
     // 1. begin
-    // 2. campfire
-    // 3. space
+    // 2. space
+    // 3. campfire
     // 4. underwater
     expState: undefined,
     EXP_STATE: Object.freeze({
@@ -114,7 +114,7 @@ app.main = {
         
         // --- initialise audio
         this.bgAudio = document.querySelector("#bgAudio");
-        this.bgAudio.volume = 0.2;
+        this.bgAudio.volume = 1.0;
         this.effectAudio = document.querySelector("#effectAudio");
         this.effectAudio.volume = 0.3;
         
@@ -122,8 +122,8 @@ app.main = {
         // map
         this.room.map = this.scene.map;
         
-        // generate large image texture --> the first one should be CAMPFIRE
-        this.room.map.generate(this.EXP_STATE.CAMPFIRE);
+        // generate large image texture --> the first one should be SPACE
+        this.room.map.generate(this.EXP_STATE.SPACE);
         // *** EVERY TIME ANOTHER SCENE IS SELECTED, WE HAVE TO REGENERATE THE MAP ***
         // capture selection --> pass into generate using: 
         // this.room.map.generate(this.expState);
@@ -136,8 +136,6 @@ app.main = {
         
         // world boundary rectangle
         this.camera.worldRect = new this.scene.Viewport(0, 0, this.room.width, this.room.height);
-        
-        //console.dir(this.camera);
         
         // follower
         this.sprite.fish.xPos = getRandom(0, this.canvas.width);
@@ -182,12 +180,12 @@ app.main = {
         var activeSprite;
         
         switch(this.expState) {
-            case this.EXP_STATE.CAMPFIRE:
-                activeSprite = sprite.fire;
-                break;
-
             case this.EXP_STATE.SPACE:
                 activeSprite = sprite.alien;
+                break;
+                
+            case this.EXP_STATE.CAMPFIRE:
+                activeSprite = sprite.fire;
                 break;
 
             case this.EXP_STATE.UNDERWATER:
