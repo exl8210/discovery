@@ -12,14 +12,15 @@ function getMouse(e){
 }
 
 // --- Preloading
-function simplePreload(imageArray){
+
+/*function simplePreload(imageArray){
 	// loads images all at once
 	for (var i = 0; i < imageArray.length; i++) {
 		var img = new Image();
 		img.src = imageArray[i];
 	}
 }
-
+*/
 function loadImagesWithCallback(sources, callback) {
 	var imageObjects = [];
 	var numImages = sources.length;

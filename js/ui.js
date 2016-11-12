@@ -25,6 +25,9 @@ document.querySelector("#campState").onchange = function(e){
         // regenerate room
         app.main.room.map.generate(app.main.expState);
         
+        // reset camera
+        app.main.camReset();
+        
         // change sound
         app.sound.changeAudio();
     }
@@ -41,6 +44,9 @@ document.querySelector("#spaceState").onchange = function(e){
         // regenerate room
         app.main.room.map.generate(app.main.expState);
         
+        // reset camera
+        app.main.camReset();
+        
         // change sound
         app.sound.changeAudio();
     }
@@ -56,6 +62,9 @@ document.querySelector("#underwaterState").onchange = function(e){
         
         // regenerate room
         app.main.room.map.generate(app.main.expState);
+        
+        // reset camera
+        app.main.camReset();
         
         // change sound
         app.sound.changeAudio();

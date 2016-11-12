@@ -146,7 +146,7 @@ app.sprite = (function () {
         sheetWidth: 375,
         sheetHeight: 123,
         image: fireImg,
-        xPos: canvas.width/2,
+        xPos: canvas.width + 120,
         yPos: canvas.height/2,
         numberOfFrames: 3,
         ticksPerFrame: 15

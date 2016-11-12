@@ -17,6 +17,24 @@ app.scene = (function(){
     });
     var direction = undefined;
     
+    // image preloading
+    var imagePaths = ["images/earth.png", "images/jupiter.png", "images/moon.png", "images/potato.png", "images/saturn.png", "images/campfire.png"];
+    var imageArray = [];
+    
+    var earth, jupiter, moon, potato, saturn, campfireScene;
+    
+    // preload
+    loadImagesWithCallback(imagePaths, function(images) {
+        imageArray = images;
+
+        earth = imageArray[0];
+        jupiter = imageArray[1];
+        moon = imageArray[2];
+        potato = imageArray[3];
+        saturn = imageArray[4];
+        campfireScene = imageArray[5];
+    });
+    
     // === Map
     var map = {
         // dimensions
@@ -37,12 +55,6 @@ app.scene = (function(){
             ctx.save();			
             
             switch (scene) {
-                case app.main.EXP_STATE.CAMPFIRE:
-                    ctx.fillStyle = "#b18c71";		    
-                    ctx.fillRect(0, 0, this.width, this.height);
-                    
-                    break;
-                    
                 case app.main.EXP_STATE.SPACE:
                     ctx.fillStyle = "#232323";		    
                     ctx.fillRect(0, 0, this.width, this.height);
@@ -55,25 +67,23 @@ app.scene = (function(){
                         ctx.fill();
                     }
                     
-                    var earth = new Image();
-                    earth.src = "images/earth.png";
-                    ctx.drawImage(earth, getRandom(0, this.width/5-100), 100);
+                    ctx.drawImage(earth, 256, getRandom(0, this.height-100));
                     
-                    var jupiter = new Image();
-                    jupiter.src = "images/jupiter.png";
-                    ctx.drawImage(jupiter, getRandom(this.width/5-190, 2*(this.width/5)-190), 100);
+                    ctx.drawImage(jupiter, 768, getRandom(0, this.height-190));
                     
-                    var moon = new Image();
-                    moon.src = "images/moon.png";
-                    ctx.drawImage(moon, getRandom(2*(this.width/5)-60, 3*(this.width)-60), 100);
+                    ctx.drawImage(moon, 1280, getRandom(0, this.height-60));
                     
-                    var potato = new Image();
-                    potato.src = "images/potato.png";
-                    ctx.drawImage(potato, getRandom(3*(this.width/5)-100, 4*(this.width)-100), 100);
+                    ctx.drawImage(potato, 1792, getRandom(0, this.height-190));
                     
-                    var saturn = new Image();
-                    saturn.src = "images/saturn.png";
-                    ctx.drawImage(saturn, getRandom(4*(this.width/5)-115, 5*(this.width)-115), 100);
+                    ctx.drawImage(saturn, 2304, getRandom(0, this.height-105));
+                    
+                    break;
+                    
+                case app.main.EXP_STATE.CAMPFIRE:
+                    ctx.fillStyle = "#b18c71";		    
+                    ctx.fillRect(0, 0, this.width, this.height);
+                    
+                    ctx.drawImage(campfireScene, 0, 0);
                     
                     break;
                     

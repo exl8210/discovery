@@ -32,6 +32,7 @@ app.main = {
         UNDERWATER: 3,
         INFO: 4
     }),
+    activeSprite: undefined,
     
     // sounds
     sound: undefined,
@@ -87,8 +88,9 @@ app.main = {
     
     Emitter: undefined,
     exhaust: undefined,
-    //emitterX: undefined,
-    //emitterY: undefined,
+    initEmitX: undefined,
+    emitterX: undefined,
+    emitterY: undefined,
 
     // --- Methods
     // initialise main
@@ -146,9 +148,10 @@ app.main = {
         //Emitter
         this.exhaust = new this.Emitter();
         this.exhaust.numParticles = 10;
-        this.emitterX = this.canvas.width/2 + 60;
+        this.emitterX = this.room.width + 180;
+        this.initEmitX = this.emitterX;
         this.emitterY = this.canvas.height/2;
-        this.exhaust.createParticles({x: this.canvas.width/2 + 60, y: this.canvas.height/2});
+        this.exhaust.createParticles({x: this.emitterX, y: this.emitterY});
         
         //-------SOUND----------
         // start with no audio
@@ -177,19 +180,18 @@ app.main = {
         
         // set up sprite references
         var sprite = this.sprite;
-        var activeSprite;
         
         switch(this.expState) {
             case this.EXP_STATE.SPACE:
-                activeSprite = sprite.alien;
+                this.activeSprite = sprite.alien;
                 break;
                 
             case this.EXP_STATE.CAMPFIRE:
-                activeSprite = sprite.fire;
+                this.activeSprite = sprite.fire;
                 break;
 
             case this.EXP_STATE.UNDERWATER:
-                activeSprite = sprite.fish;
+                this.activeSprite = sprite.fish;
                 break;
         }
         
@@ -218,9 +220,9 @@ app.main = {
                     this.room.offset++;
                     
                     // move sprites and objects
-                    activeSprite.xPos -= this.speed;
+                    this.activeSprite.xPos -= this.speed;
                     this.sprite.fish.xPos -= this.speed;
-                    this.exhaust.emitter -= this.speed;
+                    this.emitterX -= this.speed;
                 }
                 else {
                     // reposition camera at edge
@@ -242,9 +244,9 @@ app.main = {
                     this.room.offset--;
                     
                     // move sprites and objects
-                    activeSprite.xPos += this.speed;
+                    this.activeSprite.xPos += this.speed;
                     this.sprite.fish.xPos += this.speed;
-                    this.p.x += this.speed;
+                    this.emitterX += this.speed;
                 }
                 else {
                     // reposition camera at edge
@@ -259,6 +261,16 @@ app.main = {
         // draw scene
         this.drawScene(this.ctx);
         this.drawUI(this.ctx);
+    },
+    
+    // reset camera view
+    camReset: function() {
+        this.camera.xView = 0;
+        this.emitterX = this.initEmitX;
+        console.log(this.initEmitX);
+        this.activeSprite.xPos = 640;
+        
+        this.update();
     },
     
     // debug
@@ -423,7 +435,7 @@ app.main = {
         
         if (this.expState == this.EXP_STATE.CAMPFIRE) {
             //if on campfire state, display "smoke"
-            this.exhaust.updateAndDraw(this.ctx, {x: this.canvas.width/2 + 60, y: this.canvas.height/2});
+            this.exhaust.updateAndDraw(this.ctx, {x: this.emitterX, y: this.emitterY});
         
         }
         
