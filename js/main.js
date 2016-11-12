@@ -81,6 +81,10 @@ app.main = {
     initEmitX: undefined,
     emitterX: undefined,
     emitterY: undefined,
+    
+    //fire starter
+    fireOn: false,
+    fireX: 1400,
 
     // --- Methods
     // initialise main
@@ -123,7 +127,7 @@ app.main = {
         this.room.map = this.scene.map;
         
         // generate large image texture --> the first one should be SPACE
-        this.room.map.generate(this.EXP_STATE.SPACE);
+        this.room.map.generate(this.EXP_STATE.CAMPFIRE);
         // *** EVERY TIME ANOTHER SCENE IS SELECTED, WE HAVE TO REGENERATE THE MAP ***
         // capture selection --> pass into generate using: 
         // this.room.map.generate(this.expState);
@@ -133,6 +137,9 @@ app.main = {
         this.sprite.fish.yPos = getRandom(0, this.canvas.height);
         this.sprite.fish.xSpeed = getRandom(1.0, 3.0);
         this.sprite.fish.ySpeed = getRandom(1.0, 3.0);
+        
+        //hide fire until turned on
+        this.sprite.fire.yPos = -1000;
     
         // Emitter object
         this.exhaust = new this.Emitter();
@@ -222,6 +229,7 @@ app.main = {
                     this.activeSprite.xPos -= this.speed;
                     this.sprite.fish.xPos -= this.speed;
                     this.emitterX -= this.speed;
+                    this.fireX -= this.speed;
                 }
                 else {
                     // reposition camera at edge
@@ -246,6 +254,7 @@ app.main = {
                     this.activeSprite.xPos += this.speed;
                     this.sprite.fish.xPos += this.speed;
                     this.emitterX += this.speed;
+                    this.fireX += this.speed;
                 }
                 else {
                     // reposition camera at edge
@@ -260,6 +269,8 @@ app.main = {
         // draw scene
         this.drawScene(this.ctx);
         this.drawUI(this.ctx);
+        this.drawFire();
+        
     },
     
     // reset camera view
@@ -327,12 +338,19 @@ app.main = {
     // set up scene
     drawScene: function(ctx) {
         // clear the entire canvas
-        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.topCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // refresh map
         if (this.expState != this.EXP_STATE.BEGIN) {
             this.room.map.draw(ctx, this.camera.xView, this.camera.yView);	
+        }
+        
+        //draw logs if on campfire state
+        if(this.expState == this.EXP_STATE.CAMPFIRE){
+            this.ctx.drawImage(this.fireLog, this.fireX, 280);
+            
+            //console.log("drawn log");
         }
         
         // draw follower
@@ -451,11 +469,13 @@ app.main = {
             ctx.drawImage(this.titleCard, 0, 0);
         }
         
+        /*
         // draw emitter when in campfire scene
         if (this.expState == this.EXP_STATE.CAMPFIRE) {
             //if on campfire state, display "smoke"
             this.exhaust.updateAndDraw(this.ctx, {x: this.emitterX, y: this.emitterY});
         }
+        */
     },
     
     // pause
@@ -501,11 +521,18 @@ app.main = {
         
         // title screen
         if (this.expState == this.EXP_STATE.BEGIN) {
-            this.expState = this.EXP_STATE.SPACE;
+            this.expState = this.EXP_STATE.CAMPFIRE;
             this.sound.playBGAudio();
             this.sound.playEffect();
             
             return;
+        }
+        
+        // campfire screen click
+        if (this.expState == this.EXP_STATE.CAMPFIRE) {
+            this.fireOn = true;
+            console.log(this.fireOn);
+
         }
         
         // follower
@@ -513,6 +540,24 @@ app.main = {
         this.sprite.fish.targetY = mouse.y;
 
         this.sprite.fish.isFollowing = true;
+    },
+    
+    drawFire: function(){
+        //draw and update fire sprite
+        
+        if(this.fireOn == true){
+            this.sprite.fire.yPos = 240;
+        }
+
+        
+        this.sprite.fire.update();
+        this.sprite.fire.render();
+        
+        //draw emitter
+        if (this.fireOn && this.expState == this.EXP_STATE.CAMPFIRE) {
+            //if on campfire state, display "smoke"
+            this.exhaust.updateAndDraw(this.ctx, {x: this.emitterX, y: this.emitterY})
+    }
     },
     
 };

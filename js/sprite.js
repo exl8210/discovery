@@ -34,9 +34,15 @@ app.sprite = (function () {
         
         //when in campfire gamestate
         if(app.main.expState == app.main.EXP_STATE.CAMPFIRE){
+            /*
             fire.update();
             fire.render();
             //console.log("fire says crackle");
+            */
+            
+            //call function that draws and updates fire and emitter
+            app.main.drawFire();
+            
         }
        
         
