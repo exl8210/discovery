@@ -136,8 +136,8 @@ app.main = {
         // follower
         this.sprite.fish.xPos = getRandom(0, this.canvas.width);
         this.sprite.fish.yPos = getRandom(0, this.canvas.height);
-        this.sprite.fish.xSpeed = getRandom(1.0, 3.0);
-        this.sprite.fish.ySpeed = getRandom(1.0, 3.0);
+        this.sprite.fish.xSpeed = getRandom(0.5, 2.0);
+        this.sprite.fish.ySpeed = getRandom(0.5, 2.0);
         
         //hide fire until turned on
         this.sprite.fire.yPos = -100;
