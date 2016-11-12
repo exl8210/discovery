@@ -134,6 +134,20 @@ li:hover{
     bottom: 60px;
 }
 
+#instruct{
+    position: absolute;
+    bottom:220px;
+}
+
+#instructH{
+    font-family: "Work Sans", sans-serif;
+    font-weight: 200;
+    font-size: 30px;
+    color: black;
+    
+}
+
+
 /* Components */
 
 canvas#spriteCanvas {
