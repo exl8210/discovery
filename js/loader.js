@@ -30,6 +30,10 @@ window.onload = function(){
     // load main app
 	app.main.init();
     
+    document.querySelector("#fsButton").onclick = function(){
+        var discoveryExperience = document.querySelector('#experience');
+        requestFullscreen(discoveryExperience);
+    }; 
 }
 
 // --- Pausing/unpausing

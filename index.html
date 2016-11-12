@@ -31,12 +31,13 @@
                     <label for="underwaterState">Underwater</label>
                 </li>
             </form>
+        
         <div id="instruct">
             <h2 id="instructH">Instructions</h2>
             <p>
-            Use R and L arrow keys to move around the enviornment. <br>
-            Click on ocean enviornment to call your fishy friends to you.<br>
-            Click on woods enviornment to warm yourself up.
+            Use R and L arrow keys to move around the environment. <br>
+            Click on ocean environment to call your fishy friends to you.<br>
+            Click on woods environment to warm yourself up.
             </p>
         
         </div>
@@ -52,25 +53,32 @@
     <span id="hamIcon" onclick="slideOut()">&#9776;</span>
 
     <!-- Canvases -->
-    <canvas id="topCanvas" width="680" height="460">
-        This is the top canvas. Get a real browser!
-    </canvas>
-    
-    <canvas id="spriteCanvas" width="680" height="460">
-        This is the Sprite canvas. Get a real browser!
-    </canvas>
-    
-	<canvas id="scrollCanvas" width="680" height="460">
-		This is the scrolling canvas. Get a real browser!
-	</canvas>
-    
-    <!-- UI: Audio -->
-    <section id="audioControls">
+    <div id="experience">
+        <canvas id="topCanvas" width="680" height="460">
+            This is the top canvas. Get a real browser!
+        </canvas>
+
+        <canvas id="spriteCanvas" width="680" height="460">
+            This is the Sprite canvas. Get a real browser!
+        </canvas>
+
+        <canvas id="scrollCanvas" width="680" height="460">
+            This is the scrolling canvas. Get a real browser!
+        </canvas>
+    </div>
+
+    <section id="controls">
+        <!-- UI: Audio -->
         <p>Music</p>
         <audio id="bgAudio" controls loop></audio>
         <br /><br />
         <p>Effects</p>
         <audio id="effectAudio" controls loop></audio>
+
+        <br /><br />
+
+        <!-- Full screen -->
+        <button id="fsButton">Go Full Screen?</button>
     </section>
     
     <!-- JavaScript -->

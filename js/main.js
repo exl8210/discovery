@@ -84,6 +84,7 @@ app.main = {
     
     //fire starter
     fireOn: false,
+    initFireX: 1400,
     fireX: 1400,
 
     // --- Methods
@@ -127,7 +128,7 @@ app.main = {
         this.room.map = this.scene.map;
         
         // generate large image texture --> the first one should be SPACE
-        this.room.map.generate(this.EXP_STATE.CAMPFIRE);
+        this.room.map.generate(this.EXP_STATE.SPACE);
         // *** EVERY TIME ANOTHER SCENE IS SELECTED, WE HAVE TO REGENERATE THE MAP ***
         // capture selection --> pass into generate using: 
         // this.room.map.generate(this.expState);
@@ -139,7 +140,7 @@ app.main = {
         this.sprite.fish.ySpeed = getRandom(1.0, 3.0);
         
         //hide fire until turned on
-        this.sprite.fire.yPos = -1000;
+        this.sprite.fire.yPos = -100;
     
         // Emitter object
         this.exhaust = new this.Emitter();
@@ -283,6 +284,7 @@ app.main = {
         
         // if on campfire, place campfire on logs
         if (this.expState == this.EXP_STATE.CAMPFIRE) {
+            this.fireX = this.initFireX;
             this.sprite.fire.xPos = this.initEmitX - 60;
         }
         // otherwise, place sprite on its initial position
@@ -424,6 +426,26 @@ app.main = {
         }
     },
     
+    // draw campfire based on conditions
+    drawFire: function(){
+        //draw and update fire sprite
+        if(this.fireOn == true){
+            this.sprite.fire.yPos = 240;
+        }
+        else {
+            this.sprite.fire.yPos = -100;
+        }
+
+        this.sprite.fire.update();
+        this.sprite.fire.render();
+        
+        //draw emitter
+        if (this.fireOn && this.expState == this.EXP_STATE.CAMPFIRE) {
+            //if on campfire state, display "smoke"
+            this.exhaust.updateAndDraw(this.ctx, {x: this.emitterX, y: this.emitterY})
+        }
+    },
+    
     // collision detection between follower and target
     isWithin: function(x, y, f) {
         var within = false;
@@ -448,34 +470,8 @@ app.main = {
     drawUI: function(ctx) {
         // intro
         if (this.expState == this.EXP_STATE.BEGIN) {
-            /*
-            ctx.save();
-            ctx.fillStyle = "pink";
-            ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-            
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            
-            ctx.fillStyle = "white";
-            ctx.font = "32pt Helvetica";
-            ctx.fillText("D I S C O V E R Y", this.canvas.width/2, this.canvas.height/2 - 30);
-            
-            ctx.fillStyle = "#4a4a4a";
-            ctx.font = "16pt Helvetica";
-            ctx.fillText("click to start exploring!", this.canvas.width/2, this.canvas.height/2 + 30);
-            ctx.restore();
-            */
-            
             ctx.drawImage(this.titleCard, 0, 0);
         }
-        
-        /*
-        // draw emitter when in campfire scene
-        if (this.expState == this.EXP_STATE.CAMPFIRE) {
-            //if on campfire state, display "smoke"
-            this.exhaust.updateAndDraw(this.ctx, {x: this.emitterX, y: this.emitterY});
-        }
-        */
     },
     
     // pause
@@ -521,7 +517,7 @@ app.main = {
         
         // title screen
         if (this.expState == this.EXP_STATE.BEGIN) {
-            this.expState = this.EXP_STATE.CAMPFIRE;
+            this.expState = this.EXP_STATE.SPACE;
             this.sound.playBGAudio();
             this.sound.playEffect();
             
@@ -530,9 +526,12 @@ app.main = {
         
         // campfire screen click
         if (this.expState == this.EXP_STATE.CAMPFIRE) {
-            this.fireOn = true;
-            console.log(this.fireOn);
-
+            if (!this.fireOn) {
+                this.fireOn = true;
+            }
+            else {
+                this.fireOn = false;
+            }
         }
         
         // follower
@@ -540,24 +539,6 @@ app.main = {
         this.sprite.fish.targetY = mouse.y;
 
         this.sprite.fish.isFollowing = true;
-    },
-    
-    drawFire: function(){
-        //draw and update fire sprite
-        
-        if(this.fireOn == true){
-            this.sprite.fire.yPos = 240;
-        }
-
-        
-        this.sprite.fire.update();
-        this.sprite.fire.render();
-        
-        //draw emitter
-        if (this.fireOn && this.expState == this.EXP_STATE.CAMPFIRE) {
-            //if on campfire state, display "smoke"
-            this.exhaust.updateAndDraw(this.ctx, {x: this.emitterX, y: this.emitterY})
-    }
     },
     
 };

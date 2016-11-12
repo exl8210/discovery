@@ -46,18 +46,19 @@ h1 {
 }
 
 h2{
-    font-size: 30px; 
-    font-weight: 400;
     padding: 20px 0 30px 30px;
     display: block;
-    color: darkgrey;
+    font-weight: 200;
+    font-size: 30px;
+    color: black;
 }
 
-p{
+p {
     font-size: 18px;
     padding-left: 30px;
     display: block;
     color: darkgrey;
+    line-height: 28px;
 }
 
 #subtitle {
@@ -139,12 +140,12 @@ li:hover{
     bottom:220px;
 }
 
-#instructH{
-    font-family: "Work Sans", sans-serif;
-    font-weight: 200;
-    font-size: 30px;
-    color: black;
-    
+button {
+    margin: 10px;
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid grey;
+    background-color: #fafafa;
 }
 
 
@@ -168,8 +169,7 @@ canvas#scrollCanvas {
     position: absolute;
 }
 
-#audioControls {
-    /*display: none;*/
+#controls {
     top: 480px;
     margin-left: 10px;
     position: relative;
