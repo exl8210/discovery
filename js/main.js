@@ -35,7 +35,7 @@ app.main = {
     activeSprite: undefined,
     
     // intro image
-    introImg: undefined,
+    titleCard: undefined,
     
     // sounds
     sound: undefined,
@@ -109,8 +109,8 @@ app.main = {
         
         // --- initialise scene
         // intro image
-        this.introImage = new Image();
-        this.introImage.src = "images/titleCard.png";
+        this.titleCard = new Image();
+        this.titleCard.src = "images/titleCard.png";
         
         // map
         this.room.map = this.scene.map;
@@ -410,6 +410,7 @@ app.main = {
     drawUI: function(ctx) {
         // intro
         if (this.expState == this.EXP_STATE.BEGIN) {
+            /*
             ctx.save();
             ctx.fillStyle = "pink";
             ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -425,6 +426,9 @@ app.main = {
             ctx.font = "16pt Helvetica";
             ctx.fillText("click to start exploring!", this.canvas.width/2, this.canvas.height/2 + 30);
             ctx.restore();
+            */
+            
+            ctx.drawImage(this.titleCard, 0, 0);
         }
         
         
